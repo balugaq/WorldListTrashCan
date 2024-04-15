@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import io.papermc.paper.event.entity.EntityMoveEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -12,13 +14,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityTeleportEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.worldlisttrashcan.message;
 
+import static org.worldlisttrashcan.IsVersion.IsPaperSever;
+import static org.worldlisttrashcan.WorldLimitEntityCount.removeEntity.removeLivingEntity;
 import static org.worldlisttrashcan.WorldListTrashCan.UseEntityBarPlayerList;
+import static org.worldlisttrashcan.WorldListTrashCan.main;
 
 /* loaded from: 限制世界实体数量，最终版 - 副本.jar:org/example9/javafirstplugin/Main.class */
 public class LimitMain implements Listener {
+
     public static Map<String, Integer> worldLimits = new HashMap<>();
     public static List<String> BanWorlds = new ArrayList<>();
     public static boolean WorldLimitFlag = false;
@@ -27,9 +34,8 @@ public class LimitMain implements Listener {
     public static Map<String, int[]> GatherLimits = new HashMap<String, int[]>();
     public static List<String> GatherBanWorlds = new ArrayList<>();
     public static boolean GatherLimitFlag = false;
-
-
-
+//    public static Listener PaperEntityMoveEvent;
+//    public static Listener PaperEntityMoveEvent;
 
 
 //    public static Map<String, Integer> globalLimits = new HashMap<>();
@@ -102,7 +108,6 @@ public class LimitMain implements Listener {
 //    }
 
 
-
     @EventHandler
     public void onCreatureSpawn(CreatureSpawnEvent event) {
 //        System.out.println("1");
@@ -164,7 +169,8 @@ public class LimitMain implements Listener {
                         Entity entity1 = entityList.get(i);
                         if(entity1 instanceof LivingEntity){
                             LivingEntity livingEntity = (LivingEntity)entity1;
-                            livingEntity.setHealth(0);
+//                            livingEntity.setHealth(0);
+                            removeLivingEntity(livingEntity);
                         }else {
                             entity1.remove();
                         }
@@ -176,29 +182,17 @@ public class LimitMain implements Listener {
                 }
             }
         }
-//        if(true){
-//
-//            int count = 0;
-//            //附近10格内的实体
-//            for (Entity NearEntity : event.getEntity().getNearbyEntities(10, 10, 10)) {
-//                if(NearEntity.getType() == entity.getType()){
-//                    count++;
-//                }
-//            }
-//            if(count>10){
-//                event.setCancelled(true);
-//            }
-//        }
 
 
-//        else if (this.globalLimits.containsKey(entityType.name())) {
-//            int limit2 = this.globalLimits.get(entityType.name()).intValue();
-//            if (getEntityCount(entityType, worldName) >= limit2) {
-//                event.setCancelled(true);
-//                event.getEntity().remove();
-//            }
-//        }
+
     }
+
+
+//    PaperEntityMoveEvent = PaperEntityMoveEvent;
+
+
+
+
 
 //    private void loadWorldLimitConfig() {
 //        this.configFile = new File(getDataFolder(), "config.yml");
@@ -276,9 +270,12 @@ public class LimitMain implements Listener {
     @EventHandler
     public void onClickEntity(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
+//        System.out.println("1");
         if (UseEntityBarPlayerList.contains(player)) {
             Entity entity = event.getRightClicked();
+//            System.out.println("12");
             if(entity.getType()!=null){
+//                System.out.println("13");
                 String typename = entity.getType().name();
                 player.sendMessage(message.find("ClickFindEntityType").replace("%EntityType%",typename));
 
@@ -287,4 +284,30 @@ public class LimitMain implements Listener {
 
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

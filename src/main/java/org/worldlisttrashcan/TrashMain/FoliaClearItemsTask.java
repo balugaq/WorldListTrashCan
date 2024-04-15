@@ -32,7 +32,11 @@ public class FoliaClearItemsTask {
 //    ConcurrentMap<Entity,Object> ChunkMap = new ConcurrentHashMap<>();
 
     public boolean NoClearItemFlag(ItemStack itemStack){
-
+        for (String type : NoClearContainerType) {
+            if(itemStack.getType().toString().equals(type)){
+                return true;
+            }
+        }
 //        ItemStack itemStack = item.getItemStack();
         ItemMeta itemMeta = itemStack.getItemMeta();
 //        boolean flag = false;
@@ -90,6 +94,7 @@ public class FoliaClearItemsTask {
 
         boolean ClearMonster = main.getConfig().getBoolean("Set.ClearEntity.ClearMonster");
         boolean ClearAnimals = main.getConfig().getBoolean("Set.ClearEntity.ClearAnimals");
+        boolean ClearReNameEntity = main.getConfig().getBoolean("Set.ClearEntity.ClearReNameEntity");
 
         List<String> WhiteNameList = main.getConfig().getStringList("Set.ClearEntity.WhiteNameList");
         List<String> BlackNameList = main.getConfig().getStringList("Set.ClearEntity.BlackNameList");
@@ -280,6 +285,12 @@ public class FoliaClearItemsTask {
 
                                                     continue;
                                                 }
+
+                                                //如果生物被命名过
+                                                if (!ClearReNameEntity&&(entity.getCustomName()!=null&&!entity.getCustomName().isEmpty())) {
+                                                    continue;
+                                                }
+
 
                                                 if (entity instanceof org.bukkit.entity.Animals) {
                                                     if (ClearAnimals) {

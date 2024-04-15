@@ -26,6 +26,12 @@ public class ClearItemsTask {
 
 
     public boolean NoClearItemFlag(ItemStack itemStack){
+
+        for (String type : NoClearContainerType) {
+            if(itemStack.getType().toString().equals(type)){
+                return true;
+            }
+        }
 //        ItemStack itemStack = item.getItemStack();
         ItemMeta itemMeta = itemStack.getItemMeta();
 //        boolean flag = false;
@@ -69,6 +75,13 @@ public class ClearItemsTask {
             ActionBarIntToMessage.put(Integer.parseInt(strings[0]),strings[1].replace("&","§"));
         }
 
+//        //test
+//        for (Integer i : ActionBarIntToMessage.keySet()) {
+//            Bukkit.broadcastMessage("ActionBarIntToMessage.get(i) "+ActionBarIntToMessage.get(i));
+//        }
+
+
+
         Map<Integer,String> TitleIntToMessage = new HashMap<>();
         for (String message : main.getConfig().getStringList("Set.TitleMessageForCount")) {
             String[] strings= message.split(";");
@@ -83,6 +96,7 @@ public class ClearItemsTask {
 
         boolean ClearMonster = main.getConfig().getBoolean("Set.ClearEntity.ClearMonster");
         boolean ClearAnimals = main.getConfig().getBoolean("Set.ClearEntity.ClearAnimals");
+        boolean ClearReNameEntity = main.getConfig().getBoolean("Set.ClearEntity.ClearReNameEntity");
 
         List<String> WhiteNameList = main.getConfig().getStringList("Set.ClearEntity.WhiteNameList");
         List<String> BlackNameList = main.getConfig().getStringList("Set.ClearEntity.BlackNameList");
@@ -112,32 +126,39 @@ public class ClearItemsTask {
             int GlobalTrashItemSum = 0, EntitySum = 0;
             int ClearCount = 0;
 
-            public void PrintCountMessage(int count){
-                if (ChatIntToMessage.containsKey(count)) {
-                    if(ChatFlag){
-                        Bukkit.broadcastMessage(ChatIntToMessage.get(count).replace("%ItemSum%",GlobalTrashItemSum+"").replace("%EntitySum%",EntitySum+"").replace("%ClearGlobalCount%",EveryClearGlobalTrash-ClearCount+""));
-                    }
-                    if (ActionBarFlag){
-                        for (Player player : Bukkit.getOnlinePlayers()) {
+            public void PrintCountMessage(int count) {
+                if (ChatIntToMessage.containsKey(count) && ChatFlag) {
+//                    if(ChatFlag){
+                    Bukkit.broadcastMessage(ChatIntToMessage.get(count).replace("%ItemSum%", GlobalTrashItemSum + "").replace("%EntitySum%", EntitySum + "").replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""));
+                }
+
+                if (ActionBarIntToMessage.containsKey(count) && ActionBarFlag) {
+                    for (Player player : Bukkit.getOnlinePlayers()) {
 //                        Player player1 = (Player) player;
-                            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ActionBarIntToMessage.get(count).replace("%ItemSum%",GlobalTrashItemSum+"").replace("%EntitySum%",EntitySum+"").replace("%ClearGlobalCount%",EveryClearGlobalTrash-ClearCount+"")));
 
-                        }
+                        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(
+                                ActionBarIntToMessage.get(count)
+                                        .replace("%ItemSum%", GlobalTrashItemSum + "")
+                                        .replace("%EntitySum%", EntitySum + "")
+                                        .replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + "")));
+
                     }
-                    if(TitleFlag){
-                        for (Player player : Bukkit.getOnlinePlayers()) {
-                            if(TitleIntToMessage.get(count).contains(";")){
-                                String[] strings = TitleIntToMessage.get(count).split(";");
-                                player.sendTitle(strings[0].replace("%ItemSum%",GlobalTrashItemSum+"").replace("%EntitySum%",EntitySum+"").replace("%ClearGlobalCount%",EveryClearGlobalTrash-ClearCount+""),
-                                        strings[1].replace("%ItemSum%",GlobalTrashItemSum+"").replace("%EntitySum%",EntitySum+"").replace("%ClearGlobalCount%",EveryClearGlobalTrash-ClearCount+""), 10, 70, 20);
-                            }else {
-                                player.sendTitle(TitleIntToMessage.get(count).replace("%ItemSum%",GlobalTrashItemSum+"").replace("%EntitySum%",EntitySum+"").replace("%ClearGlobalCount%",EveryClearGlobalTrash-ClearCount+""), "", 10, 70, 20);
-                            }
-
+                }
+                if (TitleIntToMessage.containsKey(count) && TitleFlag) {
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        if (TitleIntToMessage.get(count).contains(";")) {
+                            String[] strings = TitleIntToMessage.get(count).split(";");
+                            player.sendTitle(strings[0].replace("%ItemSum%", GlobalTrashItemSum + "").replace("%EntitySum%", EntitySum + "").replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""),
+                                    strings[1].replace("%ItemSum%", GlobalTrashItemSum + "").replace("%EntitySum%", EntitySum + "").replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""), 10, 70, 20);
+                        } else {
+                            player.sendTitle(TitleIntToMessage.get(count).replace("%ItemSum%", GlobalTrashItemSum + "").replace("%EntitySum%", EntitySum + "").replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""), "", 10, 70, 20);
                         }
+
                     }
 
                 }
+
+
             }
             @Override
             public void run() {
@@ -317,6 +338,14 @@ public class ClearItemsTask {
 //                                        System.out.println("白名单: "+entity.getType().toString());
                                         continue;
                                     }
+
+
+                                    //如果生物被命名过
+                                    if (!ClearReNameEntity&&(entity.getCustomName()!=null&&!entity.getCustomName().isEmpty())) {
+                                        continue;
+                                    }
+
+
 
                                     if (entity instanceof org.bukkit.entity.Animals) {
                                         if (ClearAnimals) {

@@ -50,6 +50,14 @@ LimitDropItem: "%PluginTitle% &a You are prohibited from discarding items. If yo
 OffDropMode: "%PluginTitle% &a You have turned off drop mode"
 OpenDropMode: "%PluginTitle% &a You have opened drop mode"
 
+PlayerTrashCan: "&d&l %Player% &6&lPersonal trash can"
+PlayerTrashCanFilled: "%PluginTitle% &aYour Personal trash can is full and has been automatically cleaned for you"
+VaultError: "&c The economic system is not available. Please check if the economic plugin on the server exists before opening the %PluginTitle% &c plugin for the economic function options"
+PlayerTrashCanBuySuccessfully: "%PluginTitle% &a You spent% count% coins to purchase abandoned items in your personal trash can."
+PlayerTrashCanBuyFailure: "%PluginTitle% &c You don't have enough coins to buy it"
+
+HandItem: "%PluginTitle% &aMain Hand Item is %item%"
+
 HelpTitle:
   - "&l&0——————&r&7【&bWorldListTrashCan&7】&l&0——————"
   - "&6WorldListTrashCan can be abbreviated as WTC.Such as/wtc reload"
@@ -61,3 +69,4 @@ HelpTitle:
   - "&6/WorldListTrashCan GlobalBan &dOpen the global World Trash Can blacklist GUI"
   - "&6/WorldListTrashCan add [world name] <quantity> &dSet the maximum number of World Trash Cans for the world (defaults to the world at your feet)"
   - "&6/WorldListTrashCan DropMode &dOpen or Off DropMode"
+  - "&6/WorldListTrashCan PlayerTrash &dOpen personal trash can"

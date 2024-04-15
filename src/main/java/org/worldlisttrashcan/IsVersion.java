@@ -13,6 +13,7 @@ public class IsVersion {
 
 
     public static boolean IsFoliaSever;
+    public static boolean IsPaperSever;
 
 
     public static Map<String,Boolean> VersionToBoolean = new HashMap<>();

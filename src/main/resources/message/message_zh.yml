@@ -50,6 +50,14 @@ LimitDropItem: "%PluginTitle% &a你禁止丢弃物品，如果想取消请使用
 OffDropMode: "%PluginTitle% &a你已关闭丢弃模式"
 OpenDropMode: "%PluginTitle% &a你已打开丢弃模式"
 
+PlayerTrashCan: "&d&l %Player% &6&l的个人垃圾桶"
+PlayerTrashCanFilled: "%PluginTitle% &a你的个人垃圾桶装满了，已为您自动清理"
+VaultError: "%PluginTitle% &c经济系统不可用，请检查服务器经济类插件是否存在后再开启 %PluginTitle% &c插件关于经济的功能选项"
+PlayerTrashCanBuySuccessfully: "%PluginTitle% &a你花费了%count%金币购买了你私人垃圾桶中遗弃的物品"
+PlayerTrashCanBuyFail: "%PluginTitle% &c你没有足够的金币买它下来"
+
+HandItem: "%PluginTitle% &a主手手持物品为 %item%"
+
 HelpTitle:
   - "&l&0——————&r&7【&bWorldListTrashCan&7】&l&0——————"
   - "&6WorldListTrashCan可简写为WTC 如/wtc reload"
@@ -61,3 +69,4 @@ HelpTitle:
   - "&6/WorldListTrashCan GlobalBan &d打开全局世界垃圾黑名单Gui"
   - "&6/WorldListTrashCan add [世界名] <数量> &d设置世界名垃圾桶最大数量(不填则为脚下世界)"
   - "&6/WorldListTrashCan DropMode &d打开或关闭物品丢弃模式"
+  - "&6/WorldListTrashCan PlayerTrash &d打开个人垃圾桶"

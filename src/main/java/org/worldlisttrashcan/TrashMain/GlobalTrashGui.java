@@ -22,11 +22,17 @@ public class GlobalTrashGui implements InventoryHolder {
 
 
 
+    public List<Inventory> TrashList = new ArrayList<>();
 
-    public static void ClearContainer(List<Inventory> GlobalTrashList){
+
+    public void setTrashList(List<Inventory> trashList) {
+        TrashList = trashList;
+    }
+
+    public static void ClearContainer(List<Inventory> TrashList){
 
 
-        for (Inventory inventory : GlobalTrashList) {
+        for (Inventory inventory : TrashList) {
             for(int i=0;i<45;i++){
                 inventory.clear(i);
             }
@@ -34,12 +40,13 @@ public class GlobalTrashGui implements InventoryHolder {
         }
     }
 
-    public GlobalTrashGui(){
-        this.InitGlobalList();
+    public GlobalTrashGui(List<Inventory> TrashList,int MaxCount){
+        setTrashList(TrashList);
+        InitGlobalList(TrashList,MaxCount);
     }
     @Override
     public Inventory getInventory() {
-        return GlobalTrashList.get(0);
+        return this.TrashList.get(0);
     }
 
 //    public Inventory getInventory(Player player) {
@@ -49,19 +56,20 @@ public class GlobalTrashGui implements InventoryHolder {
 //        return Bukkit.createInventory(this, 54, message.find("GlobalBanChestInventoryName"));
 //    }
 
-    public void InitGlobalList(){
-//        GlobalTrashList = globalTrashGui.ge
-        if(!GlobalTrashList.isEmpty()){
-            GlobalTrashList.clear();
+    public void InitGlobalList( List<Inventory> TrashList,int MaxCount){
+        if(!TrashList.isEmpty()){
+            TrashList.clear();
         }
-        int MaxCount = main.getConfig().getInt("Set.GlobalTrash.MaxPage");
+
+
         for(int i=0;i<MaxCount;i++){
             Inventory inventory = CreateMenuItemMap(i,MaxCount-1);
 
 //            System.out.println("1");
 
-            GlobalTrashList.add(inventory);
+            TrashList.add(inventory);
         }
+
     }
     public ItemStack CreateItem(Material BackGroundMaterial, String strings, String name){
         ItemStack itemStack= new ItemStack(BackGroundMaterial);
