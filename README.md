@@ -103,7 +103,12 @@ Permission to open the global trash bin blacklist GUI.
 Permission to right-click and query the entity type.\
 ***(The above is not available by default)***
 
-spigot介绍页面和spigot下载链接(带图)
-https://www.spigotmc.org/resources/optimization-management-cleanup-%E2%AD%90-worldlisttrashcan-%E2%AD%90-more-than-just-a-cleanup-plugin.113816/
-modrinth介绍页面和modrinth下载链接(带图)
-https://modrinth.com/plugin/worldlisttrashcan
+
+**Spigot Introduction Page and Download Link (with Image)**  
+[https://www.spigotmc.org/resources/optimization-management-cleanup-%E2%AD%90-worldlisttrashcan-%E2%AD%90-more-than-just-a-cleanup-plugin.113816/](https://www.spigotmc.org/resources/optimization-management-cleanup-%E2%AD%90-worldlisttrashcan-%E2%AD%90-more-than-just-a-cleanup-plugin.113816/)
+
+**Modrinth Introduction Page and Download Link (with Image)**  
+[https://modrinth.com/plugin/worldlisttrashcan](https://modrinth.com/plugin/worldlisttrashcan)
+
+
+
