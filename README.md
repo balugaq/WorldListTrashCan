@@ -1,5 +1,3 @@
-这是一个我的世界的清理插件
-
 ## Allows players to customize their home world's trash bin.
 
 This cleaning plugin operates within a specific world (the player's home) and, when cleaning items, gathers them into a trash bin that the player has personally set up in their home. It combines various features, supports Folia, boasts highly configurable settings, and is compatible with multiple languages.
