@@ -199,8 +199,6 @@ public class FoliaClearItemsTask {
                         for (Chunk chunk : world.getLoadedChunks()) {
 
 
-
-
                             Bukkit.getRegionScheduler().run(main,new Location(chunk.getWorld(), chunk.getX() * 16, 0, chunk.getZ() * 16),new Consumer<ScheduledTask>() {
                                 @Override
                                 public void accept(ScheduledTask scheduledTask) {
