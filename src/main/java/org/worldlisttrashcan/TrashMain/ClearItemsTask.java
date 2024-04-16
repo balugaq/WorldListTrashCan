@@ -342,7 +342,6 @@ public class ClearItemsTask {
                                         continue;
                                     }
 
-
                                     if (WhiteNameList.contains(entity.getType().toString())) {
 //                                        System.out.println("白名单: "+entity.getType().toString());
                                         continue;

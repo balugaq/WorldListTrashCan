@@ -295,7 +295,6 @@ public class FoliaClearItemsTask {
                                                     continue;
                                                 }
 
-
                                                 if (entity instanceof org.bukkit.entity.Animals) {
                                                     if (ClearAnimals) {
                                                         entity.remove();
