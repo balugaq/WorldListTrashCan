@@ -302,7 +302,6 @@ public class FoliaClearItemsTask {
                                                     if (ClearAnimals) {
                                                         entity.remove();
                                                         EntitySum++;
-
                                                         continue;
                                                     }
                                                 } else if (entity instanceof org.bukkit.entity.Monster) {
