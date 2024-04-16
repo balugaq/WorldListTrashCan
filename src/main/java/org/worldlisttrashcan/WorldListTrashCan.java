@@ -6,6 +6,7 @@ import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -422,7 +423,30 @@ public final class WorldListTrashCan extends JavaPlugin {
                 } else {
                     sender.sendMessage(message.find("NotIsPlayer"));
                 }
-            } else if (args[0].equalsIgnoreCase("add")) {
+            }
+//            else if (args[0].equalsIgnoreCase("action")) {
+////                getLogger().info("发送指令者是: "+sender.getName());
+////                getLogger().info("是否有权限: "+sender.hasPermission("WorldListTrashCan.reload"));
+//
+//                    if (sender instanceof Player) {
+//                        if (sender.hasPermission("WorldListTrashCan.Look")||sender.isOp()) {
+//                            Player player = ((Player) sender).getPlayer();
+//                            Chunk chunk = player.getChunk();
+//                            for (Entity entity : chunk.getEntities()) {
+//                                if(entity instanceof Player){
+//                                    continue;
+//                                }
+//                                player.sendMessage("entity type "+entity.getType());
+//                                entity.remove();
+//                            }
+//                        }else {
+//                            sender.sendMessage(message.find("NotHavePermission").replace("%permission%","WorldListTrashCan.Look"));
+//                        }
+//                    } else {
+//                        sender.sendMessage(message.find("NotIsPlayer"));
+//                    }
+//            }
+            else if (args[0].equalsIgnoreCase("add")) {
 //                getLogger().info("发送指令者是: "+sender.getName());
 //                getLogger().info("是否有权限: "+sender.hasPermission("WorldListTrashCan.reload"));
 //                data.getConfig().getInt("WorldData." + world.getName() + ".RashMaxCount")

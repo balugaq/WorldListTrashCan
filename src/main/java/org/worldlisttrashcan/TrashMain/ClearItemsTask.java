@@ -11,6 +11,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.worldlisttrashcan.data;
 
+import static org.bukkit.entity.EntityType.WANDERING_TRADER;
 import static org.worldlisttrashcan.TrashMain.GlobalTrashGui.ClearContainer;
 import static org.worldlisttrashcan.WorldListTrashCan.main;
 
@@ -334,6 +335,14 @@ public class ClearItemsTask {
 
 //                                    System.out.println("实体: "+entity.getType().toString());
 
+                                    if (BlackNameList.contains(entity.getType().toString())) {
+//                                        System.out.println("黑名单: "+entity.getType().toString());
+                                        entity.remove();
+                                        EntitySum++;
+                                        continue;
+                                    }
+
+
                                     if (WhiteNameList.contains(entity.getType().toString())) {
 //                                        System.out.println("白名单: "+entity.getType().toString());
                                         continue;
@@ -362,11 +371,11 @@ public class ClearItemsTask {
                                     }
 
 
-                                    if (BlackNameList.contains(entity.getType().toString())) {
-//                                        System.out.println("黑名单: "+entity.getType().toString());
-                                        entity.remove();
-                                        EntitySum++;
-                                    }
+//                                    if (BlackNameList.contains(entity.getType().toString())) {
+////                                        System.out.println("黑名单: "+entity.getType().toString());
+//                                        entity.remove();
+//                                        EntitySum++;
+//                                    }
 
 
                                 }

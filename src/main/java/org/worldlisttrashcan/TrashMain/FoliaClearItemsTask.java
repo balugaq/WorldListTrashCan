@@ -281,6 +281,12 @@ public class FoliaClearItemsTask {
                                         } else {
                                             if (ClearEntityFlag) {
 
+                                                if (BlackNameList.contains(entity.getType().toString())) {
+                                                    entity.remove();
+                                                    EntitySum++;
+                                                    continue;
+                                                }
+
                                                 if (WhiteNameList.contains(entity.getType().toString())) {
 
                                                     continue;
@@ -309,11 +315,11 @@ public class FoliaClearItemsTask {
                                                 }
 
 
-                                                if (BlackNameList.contains(entity.getType().toString())) {
-                                                    entity.remove();
-                                                    EntitySum++;
-
-                                                }
+//                                                if (BlackNameList.contains(entity.getType().toString())) {
+//                                                    entity.remove();
+//                                                    EntitySum++;
+//                                                    continue;
+//                                                }
 
 
                                             }
