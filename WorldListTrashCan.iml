@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module version="4">
+  <component name="AdditionalModuleElements">
+    <content url="file://$MODULE_DIR$/WorldListTrashCan" dumb="true">
+      <excludeFolder url="file://$MODULE_DIR$/WorldListTrashCan/.idea" />
+    </content>
+  </component>
   <component name="FacetManager">
     <facet type="minecraft" name="Minecraft">
       <configuration>
         <autoDetectTypes>
           <platformType>PAPER</platformType>
           <platformType>ADVENTURE</platformType>
+          <platformType>BUKKIT</platformType>
         </autoDetectTypes>
       </configuration>
     </facet>
