@@ -1,7 +1,7 @@
-/WorldTrashCan/*.jar
-/WorldTrashCan/.idea/
-/WorldTrashCan/target/
-/WorldTrashCan/.git/
-/WorldTrashCan/.gitignore
-/WorldTrashCan/pom.xml
-/WorldTrashCan/WorldListTrashCan.iml
+WorldTrashCan/*.jar
+WorldTrashCan/.idea/
+WorldTrashCan/target/
+WorldTrashCan/.git/
+WorldTrashCan/.gitignore
+WorldTrashCan/pom.xml
+WorldTrashCan/WorldListTrashCan.iml
