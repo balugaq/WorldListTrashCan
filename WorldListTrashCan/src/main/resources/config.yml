@@ -20,7 +20,6 @@
 # papi指令/papi parse --null %WTC_ClearTime%
 
 # 留空符号是[] ，而不是简单的删除所有内容！
-
 Set:
   Debug: false
   Lang: message_zh.yml
@@ -113,7 +112,7 @@ Set:
   #    SEGMENTED_10,
   #    SEGMENTED_12,
   #    SEGMENTED_20;
-  BossBarFlag: true
+  BossBarFlag: false
   BossBarMessageForCount:
     - 30;&d&l即将清理物品和实体;SOLID;RED
     - 29;&d&l即将清理物品和实体;SOLID;YELLOW
@@ -186,7 +185,7 @@ Set:
     - -2;&a公共垃圾桶的物品已刷新
 
   #是否启用聊天栏的提示方式
-  ChatFlag: false
+  ChatFlag: true
   #当读秒到达以下数字时会进行一次信息的发送   如  &d&l还剩下 60 秒清理物品和实体
   ChatMessageForCount:
     - 60;&d还剩下 60 秒清理物品和实体

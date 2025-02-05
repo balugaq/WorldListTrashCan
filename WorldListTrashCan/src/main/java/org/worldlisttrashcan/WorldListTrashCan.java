@@ -119,7 +119,7 @@ public final class WorldListTrashCan extends JavaPlugin {
 
 
         List<String> completions = new ArrayList<>();
-        List<String> allSubCommands = Arrays.asList("PlayerTrash","DropMode","look","GlobalBan","help","reload","GlobalTrash","ban","add");
+        List<String> allSubCommands = Arrays.asList("PlayerTrash","DropMode","look","GlobalBan","help","reload","GlobalTrash","ban","add","clear");
         if (command.getName().equalsIgnoreCase("WorldListTrashCan")||command.getName().equalsIgnoreCase("wtc")) {
             if (args.length == 1) {
                 // 如果输入的是第一个参数，提供一些补全建议
@@ -803,6 +803,10 @@ public final class WorldListTrashCan extends JavaPlugin {
         LoadWorldLimitEntityConfig();
         NoClearContainerLore = main.getConfig().getStringList("Set.NoClearContainerLore");
         NoClearContainerType = main.getConfig().getStringList("Set.NoClearContainerType");
+
+
+//        main = this;
+
     }
 
     AutoTrashListener autoTrashListener = new AutoTrashListener();
