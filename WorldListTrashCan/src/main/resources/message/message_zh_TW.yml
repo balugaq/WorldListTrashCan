@@ -57,6 +57,7 @@ PlayerTrashCanBuySuccessfully: "%PluginTitle% &#9AFF9A你花費了%count%金幣�
 PlayerTrashCanBuyFail: "%PluginTitle% &#FF3030你沒有足够的金幣買它下來"
 
 HandItem: "%PluginTitle% &#9AFF9A主手手持物品為 %item%"
+ChunkEntityList: "%PluginTitle% &#9AFF9A當前區塊的實體清單"
 
 HelpTitle:
   - "&l&#7472a5——————&r&7【&#a1b2ffWorldListTrashCan&7】&l&#7472a5——————"

@@ -160,7 +160,7 @@ public class ClearItemsTask {
 //            final String message = main.getConfig().getString("Set.Message");
 
 
-            int GlobalTrashItemSum = 0, EntitySum = 0;
+            int GlobalTrashItemSum = 0, DealItemSum=0,EntitySum = 0;
             int ClearCount = 0;
 
             public void PrintCountMessage(int count) {
@@ -172,7 +172,7 @@ public class ClearItemsTask {
                     String string = BossBarToMessage.get(count);
                     String[] strings = string.split(";");
                     String message = (strings[0]
-                            .replace("%ItemSum%", GlobalTrashItemSum + "")
+                            .replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "")
                             .replace("%EntitySum%", EntitySum + "")
                             .replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""));
                     for (OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
@@ -202,7 +202,9 @@ public class ClearItemsTask {
                 }
 
                 if (ChatFlag && ChatIntToMessage.containsKey(count)) {
-                    Bukkit.broadcastMessage(ChatIntToMessage.get(count).replace("%ItemSum%", GlobalTrashItemSum + "").replace("%EntitySum%", EntitySum + "").replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""));
+                    Bukkit.broadcastMessage(ChatIntToMessage.get(count).replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%", EntitySum + "").replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""));
+                    message.consoleSay(ChatIntToMessage.get(count).replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%", EntitySum + "").replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""));
+
                 }
 
                 if (SoundFlag && SoundIntToMessage.containsKey(count)) {
@@ -215,7 +217,7 @@ public class ClearItemsTask {
                     for (Player player : Bukkit.getOnlinePlayers()) {
 
                         sendMessageAbstract.sendActionBar(player,ActionBarIntToMessage.get(count)
-                                .replace("%ItemSum%", GlobalTrashItemSum + "")
+                                .replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "")
                                 .replace("%EntitySum%", EntitySum + "")
                                 .replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""));
 
@@ -225,10 +227,10 @@ public class ClearItemsTask {
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         if (TitleIntToMessage.get(count).contains(";")) {
                             String[] strings = TitleIntToMessage.get(count).split(";");
-                            player.sendTitle(strings[0].replace("%ItemSum%", GlobalTrashItemSum + "").replace("%EntitySum%", EntitySum + "").replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""),
-                                    strings[1].replace("%ItemSum%", GlobalTrashItemSum + "").replace("%EntitySum%", EntitySum + "").replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""), 10, 70, 20);
+                            player.sendTitle(strings[0].replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%", EntitySum + "").replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""),
+                                    strings[1].replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%", EntitySum + "").replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""), 10, 70, 20);
                         } else {
-                            player.sendTitle(TitleIntToMessage.get(count).replace("%ItemSum%", GlobalTrashItemSum + "").replace("%EntitySum%", EntitySum + "").replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""), "", 10, 70, 20);
+                            player.sendTitle(TitleIntToMessage.get(count).replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%", EntitySum + "").replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""), "", 10, 70, 20);
                         }
 
                     }
@@ -247,40 +249,45 @@ public class ClearItemsTask {
                         WorldList = Bukkit.getWorlds();
 
                         GlobalTrashItemSum = 0;
+                        DealItemSum = 0;
                         EntitySum = 0;
                         ClearCount++;
-                        if (ClearCount == EveryClearGlobalTrash) {
 
-                            //清理公共垃圾桶
-                            ClearCount = 0;
-                            ClearContainer(GlobalTrashList);
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    PrintCountMessage(-2);
-                                    new BukkitRunnable() {
-                                        @Override
-                                        public void run() {
-                                            bossBar.removeAll();
-                                        }
-                                    }.runTaskLater(main, 90L);
-                                }
-                            }.runTaskLater(main, 60L);
+                        if (finalCount != 0) {
+
+                            if (ClearCount == EveryClearGlobalTrash) {
+
+                                //清理公共垃圾桶
+                                ClearCount = 0;
+                                ClearContainer(GlobalTrashList);
+                                new BukkitRunnable() {
+                                    @Override
+                                    public void run() {
+                                        PrintCountMessage(-2);
+                                        new BukkitRunnable() {
+                                            @Override
+                                            public void run() {
+                                                bossBar.removeAll();
+                                            }
+                                        }.runTaskLater(main, 90L);
+                                    }
+                                }.runTaskLater(main, 60L);
 
 
-                        } else {
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    PrintCountMessage(-1);
-                                    new BukkitRunnable() {
-                                        @Override
-                                        public void run() {
-                                            bossBar.removeAll();
-                                        }
-                                    }.runTaskLater(main, 90L);
-                                }
-                            }.runTaskLater(main, 60L);
+                            } else {
+                                new BukkitRunnable() {
+                                    @Override
+                                    public void run() {
+                                        PrintCountMessage(-1);
+                                        new BukkitRunnable() {
+                                            @Override
+                                            public void run() {
+                                                bossBar.removeAll();
+                                            }
+                                        }.runTaskLater(main, 90L);
+                                    }
+                                }.runTaskLater(main, 60L);
+                            }
                         }
 
 
@@ -446,8 +453,9 @@ public class ClearItemsTask {
                                             }
                                         }
                                     }
-
+                                    DealItemSum++;
                                     item.remove();
+
 //                                blockState.update();
                                 } else {
                                     if (ClearEntityFlag) {
@@ -537,7 +545,13 @@ public class ClearItemsTask {
                         count = finalCount;
                     }
                 }
-                PrintCountMessage(count);
+
+                if (finalCount == 0) {
+                    return;
+                }else {
+                    PrintCountMessage(count);
+                }
+
                 publicTime = count;
                 count--;
 

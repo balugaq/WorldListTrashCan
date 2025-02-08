@@ -145,7 +145,7 @@ public class FoliaClearItemsTask {
 
         foliaRunnable = new java.util.function.Consumer<ScheduledTask>() {
             int count = finalCount;
-            int GlobalTrashItemSum = 0, EntitySum = 0;
+            int GlobalTrashItemSum = 0,DealItemSum = 0, EntitySum = 0;
             int ClearCount = 0;
 
 
@@ -163,7 +163,8 @@ public class FoliaClearItemsTask {
                     String string = BossBarToMessage.get(count);
                     String[] strings = string.split(";");
                     String message = (strings[0]
-                            .replace("%ItemSum%", GlobalTrashItemSum + "")
+                            .replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "")
+                            .replace("%DealItemSum%", DealItemSum + "")
                             .replace("%EntitySum%", EntitySum + "")
                             .replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""));
                     for (OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
@@ -194,8 +195,8 @@ public class FoliaClearItemsTask {
 
                 if (ChatFlag && ChatIntToMessage.containsKey(count)) {
                         for (Player player : Bukkit.getOnlinePlayers()) {
-                            player.sendMessage(ChatIntToMessage.get(count).replace("%ItemSum%",GlobalTrashItemSum+"").replace("%EntitySum%",EntitySum+"").replace("%ClearGlobalCount%",EveryClearGlobalTrash-ClearCount+""));
-                            main.getLogger().info(ChatIntToMessage.get(count).replace("%ItemSum%",GlobalTrashItemSum+"").replace("%EntitySum%",EntitySum+"").replace("%ClearGlobalCount%",EveryClearGlobalTrash-ClearCount+""));
+                            player.sendMessage(ChatIntToMessage.get(count).replace("%GlobalTrashAddSum%",GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%",EntitySum+"").replace("%ClearGlobalCount%",EveryClearGlobalTrash-ClearCount+""));
+                            message.consoleSay(ChatIntToMessage.get(count).replace("%GlobalTrashAddSum%",GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%",EntitySum+"").replace("%ClearGlobalCount%",EveryClearGlobalTrash-ClearCount+""));
                     }
                 }
 
@@ -209,7 +210,8 @@ public class FoliaClearItemsTask {
                     for (Player player : Bukkit.getOnlinePlayers()) {
 
                         sendMessageAbstract.sendActionBar(player, ActionBarIntToMessage.get(count)
-                                .replace("%ItemSum%", GlobalTrashItemSum + "")
+                                .replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "")
+                                .replace("%DealItemSum%", DealItemSum + "")
                                 .replace("%EntitySum%", EntitySum + "")
                                 .replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""));
 
@@ -220,10 +222,10 @@ public class FoliaClearItemsTask {
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         if(TitleIntToMessage.get(count).contains(";")){
                             String[] strings = TitleIntToMessage.get(count).split(";");
-                            player.sendTitle(strings[0].replace("%ItemSum%",GlobalTrashItemSum+"").replace("%EntitySum%",EntitySum+"").replace("%ClearGlobalCount%",EveryClearGlobalTrash-ClearCount+""),
-                                    strings[1].replace("%ItemSum%",GlobalTrashItemSum+"").replace("%EntitySum%",EntitySum+"").replace("%ClearGlobalCount%",EveryClearGlobalTrash-ClearCount+""), 10, 70, 20);
+                            player.sendTitle(strings[0].replace("%GlobalTrashAddSum%",GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%",EntitySum+"").replace("%ClearGlobalCount%",EveryClearGlobalTrash-ClearCount+""),
+                                    strings[1].replace("%GlobalTrashAddSum%",GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%",EntitySum+"").replace("%ClearGlobalCount%",EveryClearGlobalTrash-ClearCount+""), 10, 70, 20);
                         }else {
-                            player.sendTitle(TitleIntToMessage.get(count).replace("%ItemSum%",GlobalTrashItemSum+"").replace("%EntitySum%",EntitySum+"").replace("%ClearGlobalCount%",EveryClearGlobalTrash-ClearCount+""), "", 10, 70, 20);
+                            player.sendTitle(TitleIntToMessage.get(count).replace("%GlobalTrashAddSum%",GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%",EntitySum+"").replace("%ClearGlobalCount%",EveryClearGlobalTrash-ClearCount+""), "", 10, 70, 20);
                         }
 
                     }
@@ -245,6 +247,7 @@ public class FoliaClearItemsTask {
                         WorldList = Bukkit.getWorlds();
 
                         GlobalTrashItemSum = 0;
+                        DealItemSum = 0;
                         EntitySum = 0;
                         ClearCount++;
                         if (ClearCount == EveryClearGlobalTrash) {
@@ -418,6 +421,7 @@ public class FoliaClearItemsTask {
                                                 item.remove();
 
 
+                                                DealItemSum++;
 //                                blockState.update();
                                             } else {
                                                 if (ClearEntityFlag) {
@@ -510,7 +514,11 @@ public class FoliaClearItemsTask {
                     }
                 }
 
-
+//                if (finalCount == 0) {
+//                    return;
+//                }else {
+//                    PrintCountMessage(count);
+//                }
                 PrintCountMessage(count);
 
                 publicTime = count;

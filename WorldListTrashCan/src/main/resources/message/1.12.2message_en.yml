@@ -56,6 +56,9 @@ VaultError: "&c The economic system is not available. Please check if the econom
 PlayerTrashCanBuySuccessfully: "%PluginTitle% &a You spent% count% coins to purchase abandoned items in your personal trash can."
 PlayerTrashCanBuyFailure: "%PluginTitle% &c You don't have enough coins to buy it"
 
+HandItem: "%PluginTitle% &aMain Hand Item is %item%"
+ChunkEntityList: "%PluginTitle% &aList of all entities in the current chunk"
+
 HelpTitle:
   - "&l&0——————&r&7【&bWorldListTrashCan&7】&l&0——————"
   - "&6WorldListTrashCan can be abbreviated as WTC.Such as/wtc reload"
@@ -67,4 +70,5 @@ HelpTitle:
   - "&6/WorldListTrashCan GlobalBan &dOpen the global World Trash Can blacklist GUI"
   - "&6/WorldListTrashCan add [world name] <quantity> &dSet the maximum number of World Trash Cans for the world (defaults to the world at your feet)"
   - "&6/WorldListTrashCan DropMode &dOpen or Off DropMode"
+  - "&6/WorldListTrashCan PlayerTrash &dOpen personal trash can"
   - "&6/WorldListTrashCan Clear &6Immediately carry out a garbage cleanup (the countdown will restart afterwards)"

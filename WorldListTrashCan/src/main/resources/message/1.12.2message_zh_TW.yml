@@ -56,6 +56,9 @@ VaultError: "&c經濟系統不可用，請檢查服務器經濟類挿件是否�
 PlayerTrashCanBuySuccessfully: "%PluginTitle% &a你花費了%count%金幣購買了你私人垃圾桶中遺棄的物品"
 PlayerTrashCanBuyFail: "%PluginTitle% &c你沒有足够的金幣買它下來"
 
+HandItem: "%PluginTitle% &a主手手持物品為 %item%"
+ChunkEntityList: "%PluginTitle% &a當前區塊的實體清單"
+
 HelpTitle:
   - "&l&0——————&r&7【&bWorldListTrashCan&7】&l&0——————"
   - "&6WorldListTrashCan 可簡寫為WTC 如/wtc reload"

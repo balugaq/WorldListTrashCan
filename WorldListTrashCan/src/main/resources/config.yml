@@ -83,7 +83,6 @@ Set:
       UseModel: 3
       #玩家丢在地上的物品超过以下Delay设置的时间，就算丢进仙人掌，岩浆后，也不会被处理(防止卡顿)
       Delay: 6
-      #这是对模式2的特别设置，如果你使用了模式2的话
       Model2:
         #若"个人垃圾桶"满了，是否自动清理
         AutoClear: true
@@ -113,6 +112,9 @@ Set:
   #    SEGMENTED_12,
   #    SEGMENTED_20;
   BossBarFlag: false
+  #当读秒到达以下数字时会进行一次信息的发送   如  &d&l还剩下 60 秒清理物品和实体
+  #%DealItemSum%为处理的物品总数（包括回收进任意垃圾桶的也包括被清理的）
+  #%GlobalTrashAddSum%为进入公共垃圾桶的物品总数
   BossBarMessageForCount:
     - 30;&d&l即将清理物品和实体;SOLID;RED
     - 29;&d&l即将清理物品和实体;SOLID;YELLOW
@@ -144,7 +146,7 @@ Set:
     - 3;&d&l即将清理物品和实体;SEGMENTED_20;WHITE
     - 2;&d&l即将清理物品和实体;SEGMENTED_20;RED
     - 1;&d&l即将清理物品和实体;SEGMENTED_20;YELLOW
-    - 0;&a清理成功，有%ItemSum%个物品加入了公共垃圾桶，有%EntitySum%个生物被清理;SEGMENTED_20;GREEN
+    - 0;&a清理成功，有%GlobalTrashAddSum%个物品加入了公共垃圾桶，有%EntitySum%个生物被清理;SEGMENTED_20;GREEN
     #-1和-2是设置清理公共垃圾桶时的提醒，如果本次没有清理公共垃圾桶，则输出-1的提醒，如果本次清理公共垃圾桶，则输出-2的提醒
     #该提醒是在清理垃圾后，延迟2秒发送的提醒
     - -1;&d还有%ClearGlobalCount%次清理，公共垃圾桶;SEGMENTED_20;GREEN
@@ -153,6 +155,9 @@ Set:
   #是否启用ActionBar的提示方式(经验条上面的提示字)
   #ActionBar 也支持使用RGB（版本1.16.5+）
   ActionBarFlag: true
+  #当读秒到达以下数字时会进行一次信息的发送   如  &d&l还剩下 60 秒清理物品和实体
+  #%DealItemSum%为处理的物品总数（包括回收进任意垃圾桶的也包括被清理的）
+  #%GlobalTrashAddSum%为进入公共垃圾桶的物品总数
   ActionBarMessageForCount:
     - 60;&d&l还剩下 60 秒清理物品和实体
     - 30;&d&l还剩下 30 秒清理物品和实体
@@ -161,7 +166,7 @@ Set:
     - 3;&c&l3秒
     - 2;&c&l2秒
     - 1;&c&l1秒
-    - 0;&a清理成功，有%ItemSum%个物品加入了公共垃圾桶，有%EntitySum%个生物被清理
+    - 0;&a清理成功，有%GlobalTrashAddSum%个物品加入了公共垃圾桶，有%EntitySum%个生物被清理
     #-1和-2是设置清理公共垃圾桶时的提醒，如果本次没有清理公共垃圾桶，则输出-1的提醒，如果本次清理公共垃圾桶，则输出-2的提醒
     #该提醒是在清理垃圾后，延迟2秒发送的提醒
     - -1;&d还有%ClearGlobalCount%次清理，公共垃圾桶
@@ -169,6 +174,9 @@ Set:
 
   #是否启用Title的提示方式
   TitleFlag: false
+  #当读秒到达以下数字时会进行一次信息的发送   如  &d&l还剩下 60 秒清理物品和实体
+  #%DealItemSum%为处理的物品总数（包括回收进任意垃圾桶的也包括被清理的）
+  #%GlobalTrashAddSum%为进入公共垃圾桶的物品总数
   TitleMessageForCount:
     #这里多了一个;是因为前一个是大标题，后一个是小标题
     - 60;&d还剩下 60 秒;清理物品和实体
@@ -178,7 +186,7 @@ Set:
     - 3;&c3秒
     - 2;&c2秒
     - 1;&c1秒
-    - 0;&a清理成功;有%ItemSum%个物品加入了公共垃圾桶，有%EntitySum%个生物被清理
+    - 0;&a清理成功;有%GlobalTrashAddSum%个物品加入了公共垃圾桶，有%EntitySum%个生物被清理
     #-1和-2是设置清理公共垃圾桶时的提醒，如果本次没有清理公共垃圾桶，则输出-1的提醒，如果本次清理公共垃圾桶，则输出-2的提醒
     #该提醒是在清理垃圾后，延迟2秒发送的提醒
     - -1;&d还有%ClearGlobalCount%次清理，公共垃圾桶
@@ -187,6 +195,8 @@ Set:
   #是否启用聊天栏的提示方式
   ChatFlag: true
   #当读秒到达以下数字时会进行一次信息的发送   如  &d&l还剩下 60 秒清理物品和实体
+  #%DealItemSum%为处理的物品总数（包括回收进任意垃圾桶的也包括被清理的）
+  #%GlobalTrashAddSum%为进入公共垃圾桶的物品总数
   ChatMessageForCount:
     - 60;&d还剩下 60 秒清理物品和实体
     - 30;&d还剩下 30 秒清理物品和实体
@@ -195,7 +205,7 @@ Set:
     - 3;&c3秒
     - 2;&c2秒
     - 1;&c1秒
-    - 0;&a清理成功，有%ItemSum%个物品加入了公共垃圾桶，有%EntitySum%个生物被清理
+    - 0;&a清理成功，有%DealItemSum%个物品被回收，有%GlobalTrashAddSum%个物品加入了公共垃圾桶，有%EntitySum%个生物被清理
     #-1和-2是设置清理公共垃圾桶时的提醒，如果本次没有清理公共垃圾桶，则输出-1的提醒，如果本次清理公共垃圾桶，则输出-2的提醒
     #该提醒是在清理垃圾后，延迟2秒发送的提醒
     - -1;&d还有%ClearGlobalCount%次清理，公共垃圾桶

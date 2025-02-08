@@ -504,7 +504,7 @@ public final class WorldListTrashCan extends JavaPlugin {
                         Player player = ((Player) sender).getPlayer();
                         UseEntityBarPlayerList.add(player);
 
-                        message.consoleSay(sender,"Entity Type List");
+                        message.consoleSay(player,message.find("ChunkEntityList"));
 
                         for (Entity entity : player.getLocation().getChunk().getEntities()) {
                             String typename = entity.getName();
@@ -516,6 +516,8 @@ public final class WorldListTrashCan extends JavaPlugin {
                             // 发送消息给玩家
                             player.spigot().sendMessage(clipboardMessage);
                         }
+
+                        message.consoleSay(player,message.find("HandItem").replace("%item%",player.getInventory().getItemInMainHand().getType().toString()));
 
 
 //                        for (Entity entity : player.getChunk().getEntities()) {

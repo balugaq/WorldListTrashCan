@@ -177,7 +177,10 @@ public class message {
 
     public static void AllMessageLoad(){
         List<String> LangList = new ArrayList<>();
-        LangList.add("message_zh.yml");LangList.add("message_en.yml");LangList.add("message_zh_TW.yml");
+
+        LangList.add("message_zh.yml");
+        LangList.add("message_en.yml");
+        LangList.add("message_zh_TW.yml");
         for (String TheMessage : LangList) {
             File LangFile = new File(main.getDataFolder(), "message"+ File.separator + TheMessage);
             if (!LangFile.exists())
