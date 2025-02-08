@@ -23,13 +23,13 @@ permissions:
     description: 将不回收的物品加入，如果重复加入同一物品则是取消不回收该物品
     default: true
   WorldListTrashCan.GlobalTrashOpen:
-    description: 打开全球垃圾桶
+    description: 打开公共垃圾桶
     default: true
   WorldListTrashCan.help:
     description: 帮助
     default: true
   WorldListTrashCan.GlobalBan:
-    description: 全球垃圾桶黑名单gui
+    description: 公共垃圾桶黑名单gui
     default: false
   WorldListTrashCan.Look:
     description: 点击实体获取实体类型

@@ -25,6 +25,13 @@ public class PaperEntityMoveEvent implements Listener {
         if(GatherLimitFlag){
 
             Entity entity = event.getEntity();
+
+            //如果没血了就不处理
+            if (((LivingEntity) entity).getHealth() <= 0) {
+//                System.out.println("return 了1");
+                return;
+            }
+
 //            System.out.println("000 "+entity.getName());
             if (GatherBanWorlds.contains(entity.getWorld().getName())) {
                 return;
@@ -54,6 +61,16 @@ public class PaperEntityMoveEvent implements Listener {
 
 //            for(Entity entity : player.getNearbyEntities(10,10,10)){
             for(Entity entity : player.getNearbyEntities(10,10,10)){
+
+                if (entity instanceof LivingEntity) {
+                    //如果没血了就不处理
+                    if (((LivingEntity) entity).getHealth() <= 0) {
+//                        System.out.println("return 了2");
+                        return;
+                    }
+                }
+
+
 //                System.out.println(entity.getName());
 //                EntityType entityType = entity.getType();
                 String entityType = entity.getName();

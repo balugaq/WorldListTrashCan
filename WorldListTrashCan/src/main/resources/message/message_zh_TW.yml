@@ -27,7 +27,7 @@ NotInputArgAdd: "%PluginTitle% &#FF3030只有玩家能夠不寫世界名字這�
 ReloadInformation: "%PluginTitle% &#9AFF9A插件已重載"
 
 NotHavePermission: "%PluginTitle% &#FF3030你沒有%permission%權限，無法使用"
-TrashMenuTitle: "&#a1b2ff 全球世界垃圾桶"
+TrashMenuTitle: "&#a1b2ff 公共世界垃圾桶"
 TrashMenuUpPage: "&#a1b2ff 上一頁"
 TrashMenuDownPage: "&#a1b2ff 下一頁"
 

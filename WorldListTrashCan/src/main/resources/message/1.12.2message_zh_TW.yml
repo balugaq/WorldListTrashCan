@@ -27,7 +27,7 @@ NotInputArgAdd: "%PluginTitle% &c只有玩家能夠不寫世界名字這個參�
 ReloadInformation: "%PluginTitle% &a插件已重載"
 
 NotHavePermission: "%PluginTitle% &c你沒有%permission%權限，無法使用"
-TrashMenuTitle: "&b 全球世界垃圾桶"
+TrashMenuTitle: "&b 公共世界垃圾桶"
 TrashMenuUpPage: "&b 上一頁"
 TrashMenuDownPage: "&b 下一頁"
 
@@ -67,4 +67,5 @@ HelpTitle:
   - "&6/WorldListTrashCan GlobalBan &d打開全域世界垃圾黑名單Gui"
   - "&6/WorldListTrashCan add [世界名] <數量> &d設置世界名垃圾桶最大數量(不填則為腳下世界)"
   - "&6/WorldListTrashCan DropMode &d打開或關閉物品丟棄模式"
+  - "&6/WorldListTrashCan PlayerTrash &6打開個人垃圾桶"
   - "&6/WorldListTrashCan Clear &d立刻進行一次垃圾清理（隨後會重新開始倒數計時）"

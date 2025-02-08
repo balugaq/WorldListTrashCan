@@ -17,6 +17,7 @@ public class removeEntity {
     public static void removeLivingEntity(LivingEntity livingEntity) {
         if (ItemDropFlag) {
             livingEntity.setHealth(0);
+            livingEntity.remove();
         } else {
             livingEntity.remove();
         }
@@ -28,6 +29,7 @@ public class removeEntity {
         String entityType = entity.getName();
         entityType = entityType.toUpperCase();
 
+
 //        int limit = GatherLimits.get(entityType.name())[0];
 //        int range = GatherLimits.get(entityType.name())[1];
 //        int clearCount = GatherLimits.get(entityType.name())[2];
@@ -37,6 +39,10 @@ public class removeEntity {
 //                int count = 0;
         List<org.bukkit.entity.Entity> entityList = new ArrayList<>();
         List<Player> PlayerList = new ArrayList<>();
+
+
+
+
 
         for (org.bukkit.entity.Entity NearEntity : entity.getNearbyEntities(range, range, range)) {
 //            if(NearEntity.getType() == entity.getType()){
