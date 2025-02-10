@@ -1,25 +1,36 @@
 package org.worldlisttrashcan.WorldLimitEntityCount;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.persistence.PersistentDataType;
 import org.worldlisttrashcan.message;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.worldlisttrashcan.WorldLimitEntityCount.LimitMain.GatherLimits;
+import static org.worldlisttrashcan.WorldListTrashCan.main;
 
 public class removeEntity {
     public static boolean ItemDropFlag = false;
 
+
+
     public static void removeLivingEntity(LivingEntity livingEntity) {
+
         if (ItemDropFlag) {
+            livingEntity.setMetadata("isClear", new FixedMetadataValue(main, true));
             livingEntity.setHealth(0);
             livingEntity.remove();
         } else {
             livingEntity.remove();
+            livingEntity.setMetadata("isClear", new FixedMetadataValue(main, true));
         }
     }
 

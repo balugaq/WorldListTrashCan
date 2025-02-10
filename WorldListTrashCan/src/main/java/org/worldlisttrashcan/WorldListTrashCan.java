@@ -843,7 +843,7 @@ public final class WorldListTrashCan extends JavaPlugin {
                     continue;
                 }
                 int limit = Integer.parseInt(strings[1]);
-                worldLimits.put(entityType.name(), limit);
+                worldLimits.put(entityType.name().toLowerCase(), limit);
 //            main.getLogger().info(ChatColor.GREEN + "成功设置 " + entityType.name() + " 的数量限制为 " + limit);
                 message.consoleSay(message.find("EntityCountSetOK").replace("%Count%",limit+"").replace("%Entity%",entityType.name()));
             }

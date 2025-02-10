@@ -50,6 +50,10 @@ public class QuickUseCommandListener implements Listener {
 
     @EventHandler
     public void PlayerUseCommand(PlayerCommandPreprocessEvent event){
+
+        //如果这里还是会出现问题，则改为记录时间戳的形式，不采用延迟删除的形式了
+
+
         Player player =event.getPlayer();
         if(event.isCancelled()||player.isOp()){
             return;

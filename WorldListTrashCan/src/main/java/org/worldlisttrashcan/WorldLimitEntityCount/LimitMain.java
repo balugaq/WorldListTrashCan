@@ -9,23 +9,35 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.SlimeSplitEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.metadata.MetadataValue;
 import org.worldlisttrashcan.message;
 
+import static org.worldlisttrashcan.WorldLimitEntityCount.removeEntity.dealEntity;
 import static org.worldlisttrashcan.WorldLimitEntityCount.removeEntity.removeLivingEntity;
 import static org.worldlisttrashcan.WorldListTrashCan.UseEntityBarPlayerList;
 import static org.worldlisttrashcan.message.consoleSay;
 
 /* loaded from: 限制世界实体数量，最终版 - 副本.jar:org/example9/javafirstplugin/Main.class */
 public class LimitMain implements Listener {
+
+//    @EventHandler
+//    public void onEntitySplit(SlimeSplitEvent event) {
+//        //如果是我标记的那个史莱姆
+//
+//        event.getEntity();
+//        Slime slime = event.getEntity();
+//        List<MetadataValue> metadata = slime.getMetadata("isClear");
+//        if (metadata!=null&&!metadata.isEmpty()) {
+//            event.setCancelled(true);  // 取消分裂
+//        }
+//    }
 
     public static Map<String, Integer> worldLimits = new HashMap<>();
     public static List<String> BanWorlds = new ArrayList<>();
@@ -108,6 +120,19 @@ public class LimitMain implements Listener {
 //        }
 //    }
 
+    @EventHandler
+    public void onEntitySplit(SlimeSplitEvent event) {
+        //如果是我标记的那个史莱姆
+        event.getEntity();
+        Slime slime = event.getEntity();
+        List<MetadataValue> metadata = slime.getMetadata("isClear");
+//        System.out.println("触发事件 "+metadata);
+        if (metadata!=null&&!metadata.isEmpty()) {
+//            System.out.println("取消分裂");
+            event.setCancelled(true);  // 取消分裂
+        }
+    }
+
 
     @EventHandler
     public void onCreatureSpawn(CreatureSpawnEvent event) {
@@ -116,15 +141,24 @@ public class LimitMain implements Listener {
         if (event.isCancelled()) {
             return;
         }
+
+        if (event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.SLIME_SPLIT){
+            //防止无限递归
+            return;
+        }
+
+
         EntityType entityType = entity.getType();
         String worldName = event.getLocation().getWorld().getName();
+
+
 //        System.out.println("1 "+entityType);
 //        System.out.println("2 "+worldName);
         if(WorldLimitFlag){
 //            System.out.println("worldLimits "+worldLimits.toString());
 //            System.out.println("BanWorlds.contains(worldName) "+BanWorlds.toString());
-            if (worldLimits.containsKey(entityType.name())&&!BanWorlds.contains(worldName)) {
-                int limit = worldLimits.get(entityType.name());
+            if (worldLimits.containsKey(entityType.name().toLowerCase())&&!BanWorlds.contains(worldName)) {
+                int limit = worldLimits.get(entityType.name().toLowerCase());
                 if (getEntityCount(entityType, worldName) >= limit) {
                     event.setCancelled(true);
                     entity.remove();

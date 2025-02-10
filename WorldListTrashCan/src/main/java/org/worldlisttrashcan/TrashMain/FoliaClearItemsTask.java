@@ -132,6 +132,9 @@ public class FoliaClearItemsTask {
         List<String> BlackNameList = main.getConfig().getStringList("Set.ClearEntity.BlackNameList");
 
 
+        //全部转换为小写
+        BlackNameList.replaceAll(String::toLowerCase);
+        WhiteNameList.replaceAll(String::toLowerCase);
 
         boolean ClearEntityFlag = main.getConfig().getBoolean("Set.ClearEntity.Flag");
 
@@ -426,8 +429,8 @@ public class FoliaClearItemsTask {
                                             } else {
                                                 if (ClearEntityFlag) {
 
-                                                    if (BlackNameList.contains(entity.getType().toString()) ||
-                                                            BlackNameList.contains(entity.getName())
+                                                    if (BlackNameList.contains(entity.getType().toString().toLowerCase()) ||
+                                                            BlackNameList.contains(entity.getName().toLowerCase())
                                                     ) {
 //                                        System.out.println("黑名单: "+entity.getType().toString());
                                                         entity.remove();
@@ -435,8 +438,8 @@ public class FoliaClearItemsTask {
                                                         continue;
                                                     }
 
-                                                    if (WhiteNameList.contains(entity.getType().toString()) ||
-                                                            WhiteNameList.contains(entity.getName())
+                                                    if (WhiteNameList.contains(entity.getType().toString().toLowerCase()) ||
+                                                            WhiteNameList.contains(entity.getName().toLowerCase())
                                                     ) {
 //                                        System.out.println("白名单: "+entity.getType().toString());
                                                         continue;

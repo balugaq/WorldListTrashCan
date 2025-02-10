@@ -273,6 +273,7 @@ GatherEntityLimitCount:
     #解析: 15格的范围内，只允许出现10只村民，清理其中的5只
     #如果你想限制一个实体，请你用/WorldListTrashCan Look指令
     # 如果你打开了这个功能，那这里留空是没有意义的，留空仍会依照默认配置- Villager;10;15;5
+    # 格式：实体类型;数量;范围;清理数量
     - Villager;10;15;5
 #    - Chicken;9;5;4
 
