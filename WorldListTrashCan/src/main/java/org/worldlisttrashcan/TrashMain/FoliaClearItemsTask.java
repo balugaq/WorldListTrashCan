@@ -8,10 +8,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.ExperienceOrb;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -23,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import static org.worldlisttrashcan.AutoTrashMain.AutoTrashListener.*;
+import static org.worldlisttrashcan.Method.Method.isMonster;
 import static org.worldlisttrashcan.TrashMain.GlobalTrashGui.ClearContainer;
 import static org.worldlisttrashcan.TrashMain.TrashListener.GlobalItemSetString;
 import static org.worldlisttrashcan.WorldListTrashCan.*;
@@ -197,10 +195,10 @@ public class FoliaClearItemsTask {
                 }
 
                 if (ChatFlag && ChatIntToMessage.containsKey(count)) {
-                        for (Player player : Bukkit.getOnlinePlayers()) {
-                            player.sendMessage(ChatIntToMessage.get(count).replace("%GlobalTrashAddSum%",GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%",EntitySum+"").replace("%ClearGlobalCount%",EveryClearGlobalTrash-ClearCount+""));
-                            message.consoleSay(ChatIntToMessage.get(count).replace("%GlobalTrashAddSum%",GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%",EntitySum+"").replace("%ClearGlobalCount%",EveryClearGlobalTrash-ClearCount+""));
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        player.sendMessage(ChatIntToMessage.get(count).replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%", EntitySum + "").replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""));
                     }
+                    message.consoleSay(ChatIntToMessage.get(count).replace("%GlobalTrashAddSum%",GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%",EntitySum+"").replace("%ClearGlobalCount%",EveryClearGlobalTrash-ClearCount+""));
                 }
 
                 if (SoundFlag && SoundIntToMessage.containsKey(count)) {
@@ -461,7 +459,9 @@ public class FoliaClearItemsTask {
                                                             EntitySum++;
                                                             continue;
                                                         }
-                                                    } else if (entity instanceof org.bukkit.entity.Monster) {
+//                                                    } else if (entity instanceof Enemy) {
+//                                                    } else if (entity instanceof Monster) {
+                                                    } else if (isMonster(entity)) {
                                                         if (ClearMonster) {
                                                             entity.remove();
                                                             EntitySum++;

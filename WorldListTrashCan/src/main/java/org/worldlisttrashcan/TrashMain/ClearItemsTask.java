@@ -17,6 +17,7 @@ import org.worldlisttrashcan.message;
 import java.util.*;
 
 import static org.worldlisttrashcan.AutoTrashMain.AutoTrashListener.*;
+import static org.worldlisttrashcan.Method.Method.isMonster;
 import static org.worldlisttrashcan.TrashMain.GlobalTrashGui.ClearContainer;
 import static org.worldlisttrashcan.TrashMain.TrashListener.GlobalItemSetString;
 import static org.worldlisttrashcan.WorldListTrashCan.*;
@@ -206,7 +207,7 @@ public class ClearItemsTask {
 
                 if (ChatFlag && ChatIntToMessage.containsKey(count)) {
                     Bukkit.broadcastMessage(ChatIntToMessage.get(count).replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%", EntitySum + "").replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""));
-                    message.consoleSay(ChatIntToMessage.get(count).replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%", EntitySum + "").replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""));
+//                    message.consoleSay(ChatIntToMessage.get(count).replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%", EntitySum + "").replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""));
 
                 }
 
@@ -516,7 +517,9 @@ public class ClearItemsTask {
                                                 EntitySum++;
                                                 continue;
                                             }
-                                        } else if (entity instanceof org.bukkit.entity.Monster) {
+//                                        } else if (entity instanceof Enemy) {
+//                                        } else if (entity instanceof Monster) {
+                                        } else if (isMonster(entity)) {
                                             if (ClearMonster) {
                                                 entity.remove();
 //                                            System.out.println("ClearMonster: "+entity.getType().toString());

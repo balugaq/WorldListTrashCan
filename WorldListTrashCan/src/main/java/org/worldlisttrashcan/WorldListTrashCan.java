@@ -24,6 +24,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.worldlisttrashcan.AutoTrashMain.AutoTrashListener;
 import org.worldlisttrashcan.Bstats.Metrics;
 import org.worldlisttrashcan.DropSystem.DropLimitListener;
+import org.worldlisttrashcan.Method.Method;
 import org.worldlisttrashcan.Method.SendMessageAbstract;
 import org.worldlisttrashcan.Papi.Papi;
 import org.worldlisttrashcan.SimpleChange.NotPickArrowListener;
@@ -32,6 +33,7 @@ import org.worldlisttrashcan.SpeakSystem.QuickSpeakListener;
 import org.worldlisttrashcan.SpeakSystem.QuickUseCommandListener;
 import org.worldlisttrashcan.TrashMain.*;
 import org.worldlisttrashcan.WorldLimitEntityCount.BukkitClearGatherEntityTask;
+import org.worldlisttrashcan.WorldLimitEntityCount.BukkitPlayerMoveEvent;
 import org.worldlisttrashcan.WorldLimitEntityCount.LimitMain;
 import org.worldlisttrashcan.WorldLimitEntityCount.PaperEntityMoveEvent;
 
@@ -202,6 +204,8 @@ public final class WorldListTrashCan extends JavaPlugin {
 //        IsFoliaServer = Bukkit.getServer().getVersion().contains("Folia");
         IsFoliaServer = AutoCheckFoliaServer();
 
+        hasEnemyClass = Method.isClassPresent("org.bukkit.entity.Enemy");
+
 
 
 //        System.out.println("Bukkit.getServer().getVersion().contains "+Bukkit.getServer().getVersion());
@@ -242,9 +246,10 @@ public final class WorldListTrashCan extends JavaPlugin {
 
         //警告：folia服务器只能用上面的，不能用bukkit延时任务来检查密集实体
 //        if((IsPaperServer &&!compareVersions("1.13.0")) || IsFoliaServer){
+        Bukkit.getPluginManager().registerEvents(bukkitPlayerMoveEvent, this);
         if(AutoCheckEntityMoveEventServer()){
 //            System.out.println("1");
-            Bukkit.getPluginManager().registerEvents(new PaperEntityMoveEvent(), this);
+            Bukkit.getPluginManager().registerEvents(paperEntityMoveEvent, this);
         }else {
 //            System.out.println("2");
             if(bukkitClearGatherEntityTask!=null){
@@ -818,6 +823,8 @@ public final class WorldListTrashCan extends JavaPlugin {
     TreadingFarmLandListener treadingFarmLandListener = new TreadingFarmLandListener();
 //    QuicklyPickExpBall quicklyPickExpBall = new QuicklyPickExpBall();
     QuickUseCommandListener quickUseCommandListener = new QuickUseCommandListener();
+    BukkitPlayerMoveEvent bukkitPlayerMoveEvent = new BukkitPlayerMoveEvent();
+    PaperEntityMoveEvent paperEntityMoveEvent = new PaperEntityMoveEvent();
 
 
 
