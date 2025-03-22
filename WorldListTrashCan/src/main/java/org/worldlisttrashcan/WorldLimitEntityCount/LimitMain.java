@@ -317,7 +317,7 @@ public class LimitMain implements Listener {
 //                    typename = entity.getName();
 //                }
 
-                player.sendMessage(message.find("ClickFindEntityType").replace("%EntityType%",typename));
+//                player.sendMessage(message.find("ClickFindEntityType").replace("%EntityType%",typename));
 
 //                consoleSay(player,"entity 1getName "+entity.getName());
 //                consoleSay(player,"entity getType "+entity.getType());
@@ -341,8 +341,8 @@ public class LimitMain implements Listener {
 //                player.spigot().sendMessage(commandMessage);
 
                 // 创建另一个消息组件
-                TextComponent clipboardMessage = new TextComponent("点击这里复制到聊天框");
-                clipboardMessage.setColor(ChatColor.GREEN);
+                TextComponent clipboardMessage = new TextComponent(message.find("ClickFindEntityType").replace("%EntityType%",typename));
+//                clipboardMessage.setColor(ChatColor.GREEN);
 
                 // 设置点击事件，点击后复制到聊天框
                 clipboardMessage.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, typename));

@@ -283,8 +283,8 @@ public final class WorldListTrashCan extends JavaPlugin {
         // 检查是否是管理员 (OP) 使用命令
         if (command.getName().equalsIgnoreCase("WorldListTrashCan")|| command.getName().equalsIgnoreCase("WTC")) {
             if (args.length == 0) {
-                sender.sendMessage(ChatColor.GREEN + "WorldListTrashCan " + ChatColor.BLUE + "作者QQ：2831508831");
-                sender.sendMessage(ChatColor.YELLOW + "/WorldListTrashCan help" + ChatColor.BLUE + "帮助");
+                sender.sendMessage(ChatColor.GREEN + "WorldListTrashCan " + ChatColor.BLUE + " 作者QQ：2831508831");
+                sender.sendMessage(ChatColor.YELLOW + "/WorldListTrashCan help" + ChatColor.BLUE + " 帮助");
             } else if (args[0].equalsIgnoreCase("reload")) {
 //                getLogger().info("发送指令者是: "+sender.getName());
 //                getLogger().info("是否有权限: "+sender.hasPermission("WorldListTrashCan.reload"));
@@ -522,7 +522,17 @@ public final class WorldListTrashCan extends JavaPlugin {
                             player.spigot().sendMessage(clipboardMessage);
                         }
 
-                        message.consoleSay(player,message.find("HandItem").replace("%item%",player.getInventory().getItemInMainHand().getType().toString()));
+                        String itemStr = player.getInventory().getItemInMainHand().getType().toString();
+
+                        TextComponent clipboardMessage = new TextComponent(message.find("HandItem").replace("%item%",itemStr));
+                        clipboardMessage.setColor(net.md_5.bungee.api.ChatColor.GREEN);
+                        // 设置点击事件，点击后复制到聊天框
+                        clipboardMessage.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, itemStr));
+                        // 发送消息给玩家
+                        player.spigot().sendMessage(clipboardMessage);
+
+
+//                        message.consoleSay(player,message.find("HandItem").replace("%item%",player.getInventory().getItemInMainHand().getType().toString()));
 
 
 //                        for (Entity entity : player.getChunk().getEntities()) {

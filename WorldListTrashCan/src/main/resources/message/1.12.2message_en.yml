@@ -57,7 +57,7 @@ PlayerTrashCanBuySuccessfully: "%PluginTitle% &a You spent% count% coins to purc
 PlayerTrashCanBuyFailure: "%PluginTitle% &c You don't have enough coins to buy it"
 
 HandItem: "%PluginTitle% &aMain Hand Item is %item%"
-ChunkEntityList: "%PluginTitle% &aList of all entities in the current chunk"
+ChunkEntityList: "%PluginTitle% &aList of all entities in the current chunk (Click to copy)"
 
 HelpTitle:
   - "&l&0——————&r&7【&bWorldListTrashCan&7】&l&0——————"

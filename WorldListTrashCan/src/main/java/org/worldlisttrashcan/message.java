@@ -179,6 +179,7 @@ public class message {
         List<String> LangList = new ArrayList<>();
 
         LangList.add("message_zh.yml");
+        LangList.add("message_es.yml");
         LangList.add("message_en.yml");
         LangList.add("message_zh_TW.yml");
         for (String TheMessage : LangList) {

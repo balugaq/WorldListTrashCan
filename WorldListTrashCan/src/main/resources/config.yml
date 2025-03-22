@@ -184,6 +184,23 @@ Set:
     - -1;&d还有%ClearGlobalCount%次清理，公共垃圾桶
     - -2;&a公共垃圾桶的物品已刷新
 
+  #是否启用ActionBar的提示方式(经验条上面的提示字)
+  #ActionBar 也支持使用RGB（版本1.16.5+）
+  CommandFlag: false
+  #当读秒到达以下数字时会进行一次指令的执行  如：mm mobs killall
+  #%DealItemSum%为处理的物品总数（包括回收进任意垃圾桶的也包括被清理的）
+  #%GlobalTrashAddSum%为进入公共垃圾桶的物品总数
+  CommandForCount:
+#    - 3;say 3
+#    - 2;say 2
+#    - 1;say 1
+    - 0;mm mobs killall;say 测试用句：&amm怪物已清理成功
+    # 格式： 数字;指令1;指令2;指令3
+    #-1和-2是设置清理公共垃圾桶时的提醒，如果本次没有清理公共垃圾桶，则输出-1的指令，如果本次清理公共垃圾桶，则输出-2的指令
+    #该指令是在清理垃圾后，延迟2秒发送的指令
+#    - -1;say &d还有%ClearGlobalCount%次清理，公共垃圾桶
+#    - -2;say &a公共垃圾桶的物品已刷新
+
   #是否启用Title的提示方式
   TitleFlag: false
   #当读秒到达以下数字时会进行一次信息的发送   如  &d&l还剩下 60 秒清理物品和实体
@@ -239,6 +256,11 @@ Set:
     #该提醒是在清理垃圾后，延迟2秒发送的提醒
 #    - -1;entity.experience_orb.pickup,1,0.6
 #    - -2;entity.experience_orb.pickup,1,0.6
+  #扫地时忽略的世界白名单（在此标中的世界会跳过扫地）
+  WorldClearWhiteList:
+    - testWorld
+#    - DIM-1
+#    - DIM1
 
   #普通玩家能够创建的最大世界垃圾桶数量
   DefaultRashCanMax: 3
@@ -259,9 +281,10 @@ WorldEntityLimitCount:
   #不受实体限制的世界
   # 如果你这里想留空，请这样写 BanWorldNameList: []
   BanWorldNameList:
-    - world
-    - DIM-1
-    - DIM1
+    - testWorld
+#    - world
+#    - DIM-1
+#    - DIM1
   DefaultCount:
     #一个世界最多多少个村民
     #如果你想限制一个实体，请你用/WorldListTrashCan Look指令
@@ -278,7 +301,8 @@ GatherEntityLimitCount:
   #不受实体聚集限制的世界
   # 如果你这里想留空，请这样写 BanWorldNameList: []
   BanWorldNameList:
-   - world
+   - testWorld
+#   - world
 #    - DIM-1
 #    - DIM1
   DefaultCount:

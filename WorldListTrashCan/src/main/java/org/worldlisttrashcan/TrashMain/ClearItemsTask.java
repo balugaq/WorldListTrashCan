@@ -83,6 +83,7 @@ public class ClearItemsTask {
         boolean SoundFlag = main.getConfig().getBoolean("Set.SoundFlag");
         boolean TitleFlag = main.getConfig().getBoolean("Set.TitleFlag");
         boolean ActionBarFlag = main.getConfig().getBoolean("Set.ActionBarFlag");
+        boolean CommandFlag = main.getConfig().getBoolean("Set.CommandFlag");
 
         Map<Integer,String> BossBarToMessage = new HashMap<>();
         for (String message : main.getConfig().getStringList("Set.BossBarMessageForCount")) {
@@ -111,6 +112,24 @@ public class ClearItemsTask {
             ActionBarIntToMessage.put(Integer.parseInt(strings[0]),strings[1]);
         }
 
+        Map<Integer,List<String>> CommandIntToMessage = new HashMap<>();
+        for (String message : main.getConfig().getStringList("Set.CommandForCount")) {
+            String[] strings= message.split(";");
+//            ActionBarIntToMessage.put(Integer.parseInt(strings[0]),color(strings[1]));
+            List<String> stringList = new ArrayList<>();
+            for (int i = 1; i < strings.length; i++) {
+                if(strings[i].isEmpty()||strings[i].equals(" ")){
+                    continue;
+                }
+                stringList.add(color(strings[i]));
+            }
+            if (stringList.isEmpty()){
+                continue;
+            }
+
+            CommandIntToMessage.put(Integer.parseInt(strings[0]),stringList);
+        }
+
 //        //test
 //        for (Integer i : ActionBarIntToMessage.keySet()) {
 //            Bukkit.broadcastMessage("ActionBarIntToMessage.get(i) "+ActionBarIntToMessage.get(i));
@@ -137,6 +156,8 @@ public class ClearItemsTask {
 
         List<String> WhiteNameList = main.getConfig().getStringList("Set.ClearEntity.WhiteNameList");
         List<String> BlackNameList = main.getConfig().getStringList("Set.ClearEntity.BlackNameList");
+
+        List<String> WorldClearWhiteList = main.getConfig().getStringList("Set.WorldClearWhiteList");
 
         //全部转换为小写
         BlackNameList.replaceAll(String::toLowerCase);
@@ -227,6 +248,21 @@ public class ClearItemsTask {
 
                     }
                 }
+
+                if (CommandFlag && CommandIntToMessage.containsKey(count)) {
+
+                    for (String command : CommandIntToMessage.get(count)) {
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command
+                                .replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "")
+                                .replace("%DealItemSum%", DealItemSum + "")
+                                .replace("%EntitySum%", EntitySum + "")
+                                .replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""));
+
+                    }
+
+                }
+
+
                 if (TitleFlag && TitleIntToMessage.containsKey(count)) {
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         if (TitleIntToMessage.get(count).contains(";")) {
@@ -296,6 +332,11 @@ public class ClearItemsTask {
 
 
                         for (World world : WorldList) {
+
+                            if (!WorldClearWhiteList.isEmpty() && WorldClearWhiteList.contains(world.getName())) {
+                                continue;
+                            }
+
                             Set<Location> locationSet = null;
 //                        List<Inventory> inventoryList = new ArrayList<>();
 
