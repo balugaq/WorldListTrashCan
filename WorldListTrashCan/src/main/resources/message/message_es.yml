@@ -59,6 +59,8 @@ PlayerTrashCanBuyFailure: "%PluginTitle% &#FF3030 No tienes suficientes monedas 
 HandItem: "%PluginTitle% &#9AFF9AEl objeto de la mano principal es %item%"
 ChunkEntityList: "%PluginTitle% &#9AFF9ALista de todas las entidades en el fragmento actual (Klik untuk salin)"
 
+BanWorldTrashCanInFoliaServer: "%PluginTitle% &#9AFF9ANo se puede crear el bote de basura mundial en el servidor Folia (pero se puede usar el bote de basura del jugador y el bote de basura global)"
+
 HelpTitle:
   - "&l&#7472a5——————&r&7【&#a1b2ffPapelera de la lista mundial&7】&l&#7472a5——————"
   - "&#ccffbbWorldListTrashCan se puede abreviar como WTC. usa /wtc reload"

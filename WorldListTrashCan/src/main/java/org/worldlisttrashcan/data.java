@@ -46,28 +46,34 @@ public class data {
         boolean flag = false;
         for (String WorldName : WorldDataSection.getKeys(false)) {
             Set<String> locStrSet = new HashSet<>(getConfig().getStringList("WorldData."+WorldName+".SignLocation"));
+
+
             Set<String> BanItemSet = new HashSet<>(getConfig().getStringList("WorldData." + WorldName + ".BanItem"));
             World world = Bukkit.getWorld(WorldName);
             Set<Location> LocationSet = new HashSet<>();
 
-            for (String locStr : locStrSet) {
-                String[] strings = locStr.split(",");
+            if (!locStrSet.isEmpty()){
+                for (String locStr : locStrSet) {
+                    String[] strings = locStr.split(",");
 
 
 
-                if(world==null||strings.length!=3){
+                    if(world==null||strings.length!=3){
 //                    main.getLogger().info(ChatColor.RED+"配置文件中有一个空的世界名或者不正常的坐标");
 //                    main.getLogger().info(ChatColor.RED+"世界名为："+WorldName+"坐标为："+locStr);
-                    main.getLogger().info(message.find("ConfigError").replace("%world%",WorldName).replace("%location%",locStr));
-                    flag = true;
-                    continue;
+                        main.getLogger().info(message.find("ConfigError").replace("%world%",WorldName).replace("%location%",locStr));
+                        flag = true;
+                        continue;
+                    }
+                    double x = Double.parseDouble(strings[0]);
+                    double y = Double.parseDouble(strings[1]);
+                    double z = Double.parseDouble(strings[2]);
+                    Location location = new Location(world,x,y,z);
+                    LocationSet.add(location);
                 }
-                double x = Double.parseDouble(strings[0]);
-                double y = Double.parseDouble(strings[1]);
-                double z = Double.parseDouble(strings[2]);
-                Location location = new Location(world,x,y,z);
-                LocationSet.add(location);
             }
+
+
             WorldToLocation.put(world,new RashCanInformation(LocationSet,BanItemSet));
 
         }

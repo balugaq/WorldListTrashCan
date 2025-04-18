@@ -171,6 +171,14 @@ public class TrashListener implements Listener {
             String line = lines[i];
             // 检查玩家输入的内容
             if (line.contains(main.getConfig().getString("Set.SighCheckName"))) {
+
+                //如果是folia服务器则禁用
+                if(IsFoliaServer){
+                    player.sendMessage(message.find("BanWorldTrashCanInFoliaServer"));
+                    continue;
+                }
+
+
 //                player.sendMessage(ChatColor.GREEN + "你尝试创建一个世界垃圾桶");
                 // 获取告示牌所依附的方块
                 Block sign = event.getBlock();

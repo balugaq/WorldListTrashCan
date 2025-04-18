@@ -1,7 +1,7 @@
 WorldData:
   world:
     SignLocation:
-      - 100,75,100
+      - []
     RashMaxCount: 3
     BanItem:
       - STONE

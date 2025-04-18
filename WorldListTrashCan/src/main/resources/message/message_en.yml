@@ -59,6 +59,7 @@ PlayerTrashCanBuyFailure: "%PluginTitle% &#FF3030 You don't have enough coins to
 HandItem: "%PluginTitle% &#9AFF9AMain Hand Item is %item%"
 ChunkEntityList: "%PluginTitle% &#9AFF9AList of all entities in the current chunk (Click to copy)"
 
+BanWorldTrashCanInFoliaServer: "%PluginTitle% &#FF34B3Cannot create world trash cans in Folia server (but you can use player trash cans and global trash cans)"
 HelpTitle:
   - "&l&#7472a5——————&r&7【&#a1b2ffWorldListTrashCan&7】&l&#7472a5——————"
   - "&#ccffbbWorldListTrashCan can be abbreviated as WTC.Such as/wtc reload"
