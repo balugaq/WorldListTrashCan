@@ -250,6 +250,9 @@ public class FoliaClearItemsTask {
 
                     Bukkit.getGlobalRegionScheduler().execute(main, () -> {
                         for (String command : CommandIntToMessage.get(count)) {
+                            if(command==null||command.isEmpty()){
+                                continue;
+                            }
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command
                                     .replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "")
                                     .replace("%DealItemSum%", DealItemSum + "")
@@ -418,6 +421,8 @@ public class FoliaClearItemsTask {
                                                                 if (inventory == null) {
                                                                     PlayerToInventory.put(player, InitPlayerInv(player));
                                                                 } else {
+
+                                                                    RemoveItemLore(itemStack);
                                                                     if (inventory.addItem(itemStack).isEmpty()) {
                                                                         //加进去了
                                                                         flag = false;
@@ -426,6 +431,8 @@ public class FoliaClearItemsTask {
                                                                         if (main.getConfig().getBoolean("Set.PersonalTrashCan.OriginalFeatureClearItemAddGlobalTrash.Model2.AutoClear")) {
                                                                             inventory.clear();
                                                                             player.sendMessage(message.find("PlayerTrashCanFilled"));
+
+
                                                                             if (inventory.addItem(itemStack).isEmpty()) {
                                                                                 //加进去了
                                                                                 flag = false;

@@ -10,8 +10,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.inventory.InventoryPickupItemEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -20,9 +22,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.worldlisttrashcan.message;
 
+import java.awt.event.ItemEvent;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.worldlisttrashcan.IsVersion.IsFoliaServer;
 import static org.worldlisttrashcan.IsVersion.compareVersions;
@@ -157,6 +161,7 @@ public class AutoTrashListener implements Listener {
 
             ItemMeta meta = itemStack.getItemMeta();
             NamespacedKey namespacedKey = new NamespacedKey(main,"PlayerUUID");
+
             meta.getPersistentDataContainer().set(namespacedKey, PersistentDataType.STRING,player.getUniqueId().toString());
             itemStack.setItemMeta(meta);
             item.setItemStack(itemStack);
@@ -193,6 +198,44 @@ public class AutoTrashListener implements Listener {
         }
 
 
+    }
+
+
+
+    //玩家即将捡起物品
+    @EventHandler
+    public void PlayerAttemptPickupItemEvent(PlayerAttemptPickupItemEvent event) {
+        ItemStack itemStack = event.getItem().getItemStack();
+        RemoveItemLore(itemStack);
+    }
+    //漏斗捡起物品
+    @EventHandler
+    public void InventoryPickupItemEvent(InventoryPickupItemEvent event) {
+        ItemStack itemStack = event.getItem().getItemStack();
+        RemoveItemLore(itemStack);
+    }
+
+    //背包切换物品
+    @EventHandler
+    public void InventoryClick(InventoryClickEvent event) {
+        ItemStack itemStack = event.getCurrentItem();
+        RemoveItemLore(itemStack);
+        itemStack = event.getCursor();
+        RemoveItemLore(itemStack);
+        itemStack = event.getWhoClicked().getItemOnCursor();
+        RemoveItemLore(itemStack);
+
+    }
+
+    //移除物品标签
+    public static void RemoveItemLore(ItemStack itemStack) {
+        if (itemStack == null)
+            return;
+        ItemMeta meta = itemStack.getItemMeta();
+        if (meta != null) {
+            NamespacedKey namespacedKey = new NamespacedKey(main, "PlayerUUID");meta.getPersistentDataContainer().remove(namespacedKey);
+            itemStack.setItemMeta(meta);
+        }
     }
 
 

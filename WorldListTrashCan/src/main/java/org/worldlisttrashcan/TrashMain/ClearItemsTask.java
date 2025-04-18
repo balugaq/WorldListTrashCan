@@ -252,6 +252,9 @@ public class ClearItemsTask {
                 if (CommandFlag && CommandIntToMessage.containsKey(count)) {
 
                     for (String command : CommandIntToMessage.get(count)) {
+                        if(command==null||command.isEmpty()){
+                            continue;
+                        }
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command
                                 .replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "")
                                 .replace("%DealItemSum%", DealItemSum + "")
@@ -457,6 +460,7 @@ public class ClearItemsTask {
 
                                                         PlayerToInventory.put(player, InitPlayerInv(player));
                                                     } else {
+                                                        RemoveItemLore(itemStack);
                                                         if (inventory.addItem(itemStack).isEmpty()) {
                                                             //加进去了
                                                             flag = false;

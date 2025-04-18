@@ -21,6 +21,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 import org.worldlisttrashcan.AutoTrashMain.AutoTrashListener;
 import org.worldlisttrashcan.Bstats.Metrics;
 import org.worldlisttrashcan.DropSystem.DropLimitListener;
@@ -315,12 +316,14 @@ public final class WorldListTrashCan extends JavaPlugin {
 //                        if(foliaClearItemsTask!=null){
 //                            foliaClearItemsTask.Stop();
 //                        }
+//                        System.out.println("foliaClearItemsTask ");
                         foliaClearItemsTask = new FoliaClearItemsTask(main.getConfig().getInt("Set.SecondCount"));
                         foliaClearItemsTask.Start();
                     }else {
 //                        if(clearItemsTask!=null){
 //                            clearItemsTask.Stop();
 //                        }
+//                        System.out.println("clearItemsTask ");
                         clearItemsTask = new ClearItemsTask(main.getConfig().getInt("Set.SecondCount"));
                         clearItemsTask.Start();
                     }
@@ -511,10 +514,20 @@ public final class WorldListTrashCan extends JavaPlugin {
 
                         message.consoleSay(player,message.find("ChunkEntityList"));
 
-                        for (Entity entity : player.getLocation().getChunk().getEntities()) {
-                            String typename = entity.getName();
+                        Entity[] entities = player.getLocation().getChunk().getEntities();
+                        Map<String,Integer> entityMap = new HashMap<>();
+                        for (Entity entity : entities) {
+                            if(entityMap.containsKey(entity.getName())){
+                                entityMap.put(entity.getName(),entityMap.get(entity.getName())+1);
+                            }else {
+                                entityMap.put(entity.getName(),1);
+                            }
+                        }
+
+                        for (String typename : entityMap.keySet()) {
+//                            String typename = entity.getName();
 //                            message.consoleSay(sender,"- "+typename);
-                            TextComponent clipboardMessage = new TextComponent("- "+typename);
+                            TextComponent clipboardMessage = new TextComponent("- "+typename+(entityMap.get(typename)==1?"":" *"+entityMap.get(typename)));
                             clipboardMessage.setColor(net.md_5.bungee.api.ChatColor.GREEN);
                             // 设置点击事件，点击后复制到聊天框
                             clipboardMessage.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, typename));
