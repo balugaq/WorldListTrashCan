@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static org.worldlisttrashcan.IsVersion.Is1_16_1_20Server;
 import static org.worldlisttrashcan.WorldListTrashCan.GlobalTrashList;
 import static org.worldlisttrashcan.WorldListTrashCan.main;
 import static org.worldlisttrashcan.log.logFlag;
@@ -39,27 +40,46 @@ public class GuiListener implements Listener {
 
         ItemMeta meta = itemStack.getItemMeta();
         if (meta != null) {
-            // 获取显示名（新版API）
-            if (meta.hasDisplayName()) {
-                Component displayNameComponent = meta.displayName();
-                if (displayNameComponent != null) {
-                    item += "[name:"+PlainTextComponentSerializer.plainText().serialize(displayNameComponent)+"]";
+
+            String customName = "";
+            if(Is1_16_1_20Server){
+                // 获取显示名（新版API）
+                if (meta.hasDisplayName()) {
+                    Component displayNameComponent = meta.displayName();
+                    if (displayNameComponent != null) {
+                        customName = "[name:"+PlainTextComponentSerializer.plainText().serialize(displayNameComponent)+"]";
+                    }
+                }
+            }else {
+                if(meta.hasDisplayName()){
+                    customName = meta.getDisplayName();
                 }
             }
+            item += customName;
 
             List<String> loreList = new ArrayList<>();
-            // 获取 lore（新版API 仍然是 List<Component>）
-            if (meta.hasLore()) {
-                List<Component> lore = meta.lore();
-                if (lore != null) {
-                    for (Component line : lore) {
-                        loreList.add(PlainTextComponentSerializer.plainText().serialize(line));
+            if(Is1_16_1_20Server){
+                // 获取 lore（新版API 仍然是 List<Component>）
+                if (meta.hasLore()) {
+                    List<Component> lore = meta.lore();
+                    if (lore != null) {
+                        for (Component line : lore) {
+                            loreList.add(PlainTextComponentSerializer.plainText().serialize(line));
+                        }
+                    }
+                }
+            }else {
+                //旧版API
+                if (meta.hasLore()) {
+                    for (String lore : meta.getLore()) {
+                        loreList.add(lore);
                     }
                 }
             }
             if (!loreList.isEmpty()){
                 item += "[lore:"+loreList.toString()+"]";
             }
+
 
             List<String> enchantList = new ArrayList<>();
 
