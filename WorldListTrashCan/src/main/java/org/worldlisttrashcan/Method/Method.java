@@ -1,20 +1,103 @@
 package org.worldlisttrashcan.Method;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Enemy;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.worldlisttrashcan.message;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import static org.worldlisttrashcan.IsVersion.Is1_16_1_20Server;
+import static org.worldlisttrashcan.IsVersion.Is1_21_1_20Server;
 
 public class Method {
 
+    //获取物品完整描述字符串
+    public static String getItemStackAllString(ItemStack itemStack,int amount){
+        Material material = itemStack.getType();
+
+        String item = "[material:"+material+" x "+amount+"]";
+
+        ItemMeta meta = itemStack.getItemMeta();
+        if (meta != null) {
+
+            String customName = "";
+            if(Is1_21_1_20Server){
+                // 获取显示名（新版API）
+                if (meta.hasDisplayName()) {
+                    Component displayNameComponent = meta.displayName();
+                    if (displayNameComponent != null) {
+                        customName = "[name:"+PlainTextComponentSerializer.plainText().serialize(displayNameComponent)+"]";
+                    }
+                }
+            }else {
+                if(meta.hasDisplayName()){
+                    customName = "[name:"+meta.getDisplayName()+"]";
+                }
+            }
+            item += customName;
+
+            List<String> loreList = new ArrayList<>();
+            if(Is1_21_1_20Server){
+                // 获取 lore（新版API 仍然是 List<Component>）
+                if (meta.hasLore()) {
+                    List<Component> lore = meta.lore();
+                    if (lore != null) {
+                        for (Component line : lore) {
+                            loreList.add(PlainTextComponentSerializer.plainText().serialize(line));
+                        }
+                    }
+                }
+            }else {
+                //旧版API
+                if (meta.hasLore()) {
+                    for (String lore : meta.getLore()) {
+                        loreList.add(lore);
+                    }
+                }
+            }
+            if (!loreList.isEmpty()){
+                item += "[lore:"+loreList.toString()+"]";
+            }
 
 
+            List<String> enchantList = new ArrayList<>();
 
+            if(Is1_16_1_20Server){
+                // 附魔 新API
+                Map<Enchantment, Integer> enchants = itemStack.getEnchantments();
+                for (Map.Entry<Enchantment, Integer> entry : enchants.entrySet()) {
+                    enchantList.add(entry.getKey().getKey().getKey() + ":" + entry.getValue());
+                    // ↑ 获取 enchantment 的简短 ID，例如 "sharpness:5"
+                }
+            }else {
+                Map<Enchantment, Integer> enchants = meta.getEnchants();
+                for (Enchantment enchantment : enchants.keySet()) {
+                    int level = enchants.get(enchantment);
+                    enchantList.add(enchantment.getName() + ":" + level);
+                }
+            }
+            if (!enchantList.isEmpty()){
+                item += "[enchant:"+enchantList.toString()+"]";
+            }
+        }
+        return item;
+    }
+
+    //获取物品完整描述字符串
+    public static String getItemStackAllString(ItemStack itemStack){
+        return getItemStackAllString(itemStack,itemStack.getAmount());
+    }
 
 
 

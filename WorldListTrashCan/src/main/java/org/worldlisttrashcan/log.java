@@ -19,6 +19,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static org.worldlisttrashcan.IsVersion.IsFoliaServer;
 import static org.worldlisttrashcan.WorldListTrashCan.WorldToLocation;
 import static org.worldlisttrashcan.WorldListTrashCan.main;
 
@@ -27,7 +28,6 @@ public class log {
     public static boolean logFlag = false;
 
 
-    //标准日志
     public static void logToFile(String playerName, String action, String itemName) {
         try {
             // 当前日期（用于文件名）和时间（用于日志行）
@@ -55,6 +55,20 @@ public class log {
 
         } catch (IOException e) {
             main.getLogger().warning("写入日志文件失败: " + e.getMessage());
+        }
+    }
+
+    //标准日志
+    public static void startLogToFileTask(String playerName, String action, String itemName) {
+        if (IsFoliaServer){
+            main.getServer().getGlobalRegionScheduler().execute(main, () -> {
+                logToFile(playerName, action, itemName);
+            });
+
+        }else {
+            Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
+                logToFile(playerName, action, itemName);
+            });
         }
     }
 
