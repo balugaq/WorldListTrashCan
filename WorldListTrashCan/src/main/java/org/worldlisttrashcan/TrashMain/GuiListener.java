@@ -114,7 +114,7 @@ public class GuiListener implements Listener {
                 //玩家点击的inventory就是公共垃圾桶的箱子
                 if(event.getClickedInventory()!=null&&event.getClickedInventory().equals(inventory)) {
                     //玩家指针有物品
-                    if (event.getCursor() != null && !event.getCursor().getType().isAir()) {
+                    if (event.getCursor() != null && event.getCursor().getType()!=Material.AIR) {
 //                        System.out.println("玩家从鼠标上放入物品到箱子中");
                         //事件发生后
 //                        System.out.println("[+] "+getItemStackAllString(event.getCursor()));
@@ -125,11 +125,11 @@ public class GuiListener implements Listener {
                     }
 
                     //玩家的指针没有物品
-                    if(event.getCursor() == null || event.getCursor().getType().isAir()){
+                    if(event.getCursor() == null || event.getCursor().getType()==Material.AIR){
                         //没有按快捷键
                         if (event.getHotbarButton()==-1) {
                             //玩家点击的物品不为空
-                            if(event.getCurrentItem()!=null&&!event.getCurrentItem().getType().isAir()){
+                            if(event.getCurrentItem()!=null&&event.getCurrentItem().getType()!=Material.AIR){
 //                                System.out.println("玩家将箱子中的物品放到鼠标指针上");
 //                                System.out.println("[-] "+getItemStackAllString(event.getCurrentItem()));
                                 String finalItem = getItemStackAllString(event.getCurrentItem());
@@ -151,9 +151,9 @@ public class GuiListener implements Listener {
                         //对应物品栏的物品为空
                         //item2为物品栏交换的物品
                         ItemStack item2 = player.getInventory().getItem(event.getHotbarButton());
-                        if (item2==null||item2.getType().isAir()) {
+                        if (item2==null||item2.getType()==Material.AIR) {
                             //对应箱子里的物品不为空
-                            if (item1!=null&&!item1.getType().isAir()) {
+                            if (item1!=null&&item1.getType()!=Material.AIR) {
 //                                System.out.println("玩家使用快捷键，将箱子里的物品换到空的物品栏上");
 //                                System.out.println("[-] "+getItemStackAllString(item1));
                                 String finalItem = getItemStackAllString(item1);
@@ -164,8 +164,8 @@ public class GuiListener implements Listener {
                         }
 
                         //玩家使用快捷键，将箱子里的物品换到非空的物品栏上
-                        if (item1!=null&&!item1.getType().isAir()) {
-                            if(item2!=null&&!item2.getType().isAir()){
+                        if (item1!=null&&item1.getType()!=Material.AIR) {
+                            if(item2!=null&&item2.getType()!=Material.AIR){
 //                                System.out.println("玩家使用快捷键，将箱子里的物品换到不空的物品栏上");
 //                                System.out.println("[-] "+getItemStackAllString(item1));
                                 String finalItem = getItemStackAllString(item1);
@@ -176,7 +176,7 @@ public class GuiListener implements Listener {
                         }
 
                         //如果对应的物品栏的物品不为空
-                        if (item2!=null&&!item2.getType().isAir()) {
+                        if (item2!=null&&item2.getType()!=Material.AIR) {
 //                            System.out.println("玩家使用快捷键，将物品栏的物品换到箱子中");
 //                            System.out.println("[+] "+getItemStackAllString(item2));
                             String finalItem = getItemStackAllString(item2);
