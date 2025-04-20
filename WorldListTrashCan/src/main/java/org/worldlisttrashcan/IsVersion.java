@@ -16,6 +16,7 @@ public class IsVersion {
     public static boolean IsPaperServer;
     public static boolean Is1_12_1_16Server;
     public static boolean Is1_16_1_20Server;
+    public static boolean Is1_21_1_20Server;
 
 
     public static Map<String,Boolean> VersionToBoolean = new HashMap<>();

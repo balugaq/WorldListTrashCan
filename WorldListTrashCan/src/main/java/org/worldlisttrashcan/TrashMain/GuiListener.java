@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static org.worldlisttrashcan.IsVersion.Is1_16_1_20Server;
+import static org.worldlisttrashcan.IsVersion.*;
 import static org.worldlisttrashcan.WorldListTrashCan.GlobalTrashList;
 import static org.worldlisttrashcan.WorldListTrashCan.main;
 import static org.worldlisttrashcan.log.logFlag;
@@ -42,7 +42,7 @@ public class GuiListener implements Listener {
         if (meta != null) {
 
             String customName = "";
-            if(Is1_16_1_20Server){
+            if(Is1_21_1_20Server){
                 // 获取显示名（新版API）
                 if (meta.hasDisplayName()) {
                     Component displayNameComponent = meta.displayName();

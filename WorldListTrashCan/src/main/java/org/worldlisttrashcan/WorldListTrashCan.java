@@ -218,6 +218,8 @@ public final class WorldListTrashCan extends JavaPlugin {
 
         Is1_16_1_20Server = !compareVersions("1.16.0");
 
+        Is1_21_1_20Server = !compareVersions("1.21.0");
+
         if (!setupEconomy() ) {
             message.consoleSay("&c没有找到Vault插件，已自动关闭相关功能");
         }else {
