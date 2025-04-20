@@ -27,10 +27,7 @@ import static org.worldlisttrashcan.message.color;
 public class ClearItemsTask {
     BukkitRunnable bukkitRunnable;
     List<World> WorldList = new ArrayList<>();
-
-
     int finalCount;
-
     int publicTime = 0;
 
     public int getPublicTime() {

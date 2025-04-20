@@ -2,13 +2,10 @@ package org.worldlisttrashcan.Method;
 
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Enemy;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Monster;
 import org.worldlisttrashcan.message;
-
-import static org.worldlisttrashcan.WorldListTrashCan.main;
-import static org.worldlisttrashcan.message.consoleSay;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 
 import java.util.ArrayList;
 import java.util.List;

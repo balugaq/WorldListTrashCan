@@ -21,7 +21,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.jetbrains.annotations.NotNull;
 import org.worldlisttrashcan.AutoTrashMain.AutoTrashListener;
 import org.worldlisttrashcan.Bstats.Metrics;
 import org.worldlisttrashcan.DropSystem.DropLimitListener;
@@ -39,7 +38,6 @@ import org.worldlisttrashcan.WorldLimitEntityCount.LimitMain;
 import org.worldlisttrashcan.WorldLimitEntityCount.PaperEntityMoveEvent;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import static org.worldlisttrashcan.AutoTrashMain.AutoTrashListener.NoWorldTrashCanEnterPersonalTrashCan;
@@ -50,8 +48,8 @@ import static org.worldlisttrashcan.Method.Method.*;
 import static org.worldlisttrashcan.TrashMain.TrashListener.GlobalItemSetString;
 import static org.worldlisttrashcan.WorldLimitEntityCount.LimitMain.*;
 import static org.worldlisttrashcan.WorldLimitEntityCount.removeEntity.ItemDropFlag;
+import static org.worldlisttrashcan.log.logFlag;
 import static org.worldlisttrashcan.message.*;
-
 public final class WorldListTrashCan extends JavaPlugin {
 
     public static Plugin main;
@@ -709,6 +707,8 @@ public final class WorldListTrashCan extends JavaPlugin {
 
 
 //        IsFoliaServer = getConfig().getBoolean("IsFoliaServer");
+        logFlag = main.getConfig().getBoolean("Set.GlobalTrash.Log.Enable");
+//        refinementLogFlag = main.getConfig().getBoolean("Set.GlobalTrash.Log.EnableRefinementLog");
 
 
         GlobalItemSetString = new HashSet<>(main.getConfig().getStringList("GlobalBanItem"));
