@@ -58,7 +58,7 @@ public class GuiListener implements Listener {
             item += customName;
 
             List<String> loreList = new ArrayList<>();
-            if(Is1_16_1_20Server){
+            if(Is1_21_1_20Server){
                 // 获取 lore（新版API 仍然是 List<Component>）
                 if (meta.hasLore()) {
                     List<Component> lore = meta.lore();
