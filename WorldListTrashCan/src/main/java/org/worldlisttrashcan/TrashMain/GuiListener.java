@@ -83,11 +83,19 @@ public class GuiListener implements Listener {
 
             List<String> enchantList = new ArrayList<>();
 
-            // 附魔
-            Map<Enchantment, Integer> enchants = itemStack.getEnchantments();
-            for (Map.Entry<Enchantment, Integer> entry : enchants.entrySet()) {
-                enchantList.add(entry.getKey().getKey().getKey() + ":" + entry.getValue());
-                // ↑ 获取 enchantment 的简短 ID，例如 "sharpness:5"
+            if(Is1_16_1_20Server){
+                // 附魔 新API
+                Map<Enchantment, Integer> enchants = itemStack.getEnchantments();
+                for (Map.Entry<Enchantment, Integer> entry : enchants.entrySet()) {
+                    enchantList.add(entry.getKey().getKey().getKey() + ":" + entry.getValue());
+                    // ↑ 获取 enchantment 的简短 ID，例如 "sharpness:5"
+                }
+            }else {
+                Map<Enchantment, Integer> enchants = meta.getEnchants();
+                for (Enchantment enchantment : enchants.keySet()) {
+                    int level = enchants.get(enchantment);
+                    enchantList.add(enchantment.getName() + ":" + level);
+                }
             }
             if (!enchantList.isEmpty()){
                 item += "[enchant:"+enchantList.toString()+"]";
