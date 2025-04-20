@@ -52,7 +52,7 @@ public class GuiListener implements Listener {
                 }
             }else {
                 if(meta.hasDisplayName()){
-                    customName = meta.getDisplayName();
+                    customName = "[name:"+meta.getDisplayName()+"]";
                 }
             }
             item += customName;
