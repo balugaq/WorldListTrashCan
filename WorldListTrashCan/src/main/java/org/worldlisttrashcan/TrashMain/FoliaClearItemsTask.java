@@ -2,9 +2,6 @@ package org.worldlisttrashcan.TrashMain;
 
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -20,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import static org.worldlisttrashcan.AutoTrashMain.AutoTrashListener.*;
+import static org.worldlisttrashcan.AutoTrashMain.HeightVersionPlayerDropItemListener.RemoveItemTag;
 import static org.worldlisttrashcan.Method.Method.isMonster;
 import static org.worldlisttrashcan.TrashMain.GlobalTrashGui.ClearContainer;
 import static org.worldlisttrashcan.TrashMain.TrashListener.GlobalItemSetString;
@@ -77,6 +75,7 @@ public class FoliaClearItemsTask {
 
         boolean BossBarFlag = main.getConfig().getBoolean("Set.BossBarFlag");
         boolean ChatFlag = main.getConfig().getBoolean("Set.ChatFlag");
+        boolean ChatConsoleLogFlag = main.getConfig().getBoolean("Set.ChatConsoleLogFlag");
         boolean SoundFlag = main.getConfig().getBoolean("Set.SoundFlag");
         boolean TitleFlag = main.getConfig().getBoolean("Set.TitleFlag");
         boolean CommandFlag = main.getConfig().getBoolean("Set.CommandFlag");
@@ -215,7 +214,10 @@ public class FoliaClearItemsTask {
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         player.sendMessage(ChatIntToMessage.get(count).replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%", EntitySum + "").replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""));
                     }
-                    message.consoleSay(ChatIntToMessage.get(count).replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%", EntitySum + "").replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""));
+                    if (ChatConsoleLogFlag){
+                        message.consoleSay(ChatIntToMessage.get(count).replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%", EntitySum + "").replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""));
+                    }
+
                 }
 
                 if (SoundFlag && SoundIntToMessage.containsKey(count)) {
@@ -422,7 +424,7 @@ public class FoliaClearItemsTask {
                                                                     PlayerToInventory.put(player, InitPlayerInv(player));
                                                                 } else {
 
-                                                                    RemoveItemLore(itemStack);
+                                                                    RemoveItemTag(itemStack);
                                                                     if (inventory.addItem(itemStack).isEmpty()) {
                                                                         //加进去了
                                                                         flag = false;

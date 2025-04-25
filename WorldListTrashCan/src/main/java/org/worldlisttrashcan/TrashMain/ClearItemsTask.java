@@ -1,6 +1,5 @@
 package org.worldlisttrashcan.TrashMain;
 
-import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.*;
 import org.bukkit.boss.BarColor;
@@ -17,6 +16,7 @@ import org.worldlisttrashcan.message;
 import java.util.*;
 
 import static org.worldlisttrashcan.AutoTrashMain.AutoTrashListener.*;
+import static org.worldlisttrashcan.AutoTrashMain.HeightVersionPlayerDropItemListener.RemoveItemTag;
 import static org.worldlisttrashcan.Method.Method.isMonster;
 import static org.worldlisttrashcan.TrashMain.GlobalTrashGui.ClearContainer;
 import static org.worldlisttrashcan.TrashMain.TrashListener.GlobalItemSetString;
@@ -77,6 +77,7 @@ public class ClearItemsTask {
 
         boolean BossBarFlag = main.getConfig().getBoolean("Set.BossBarFlag");
         boolean ChatFlag = main.getConfig().getBoolean("Set.ChatFlag");
+        boolean ChatConsoleLogFlag = main.getConfig().getBoolean("Set.ChatConsoleLogFlag");
         boolean SoundFlag = main.getConfig().getBoolean("Set.SoundFlag");
         boolean TitleFlag = main.getConfig().getBoolean("Set.TitleFlag");
         boolean ActionBarFlag = main.getConfig().getBoolean("Set.ActionBarFlag");
@@ -224,9 +225,15 @@ public class ClearItemsTask {
                 }
 
                 if (ChatFlag && ChatIntToMessage.containsKey(count)) {
-                    Bukkit.broadcastMessage(ChatIntToMessage.get(count).replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%", EntitySum + "").replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""));
+//                    Bukkit.broadcastMessage(ChatIntToMessage.get(count).replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%", EntitySum + "").replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""));
 //                    message.consoleSay(ChatIntToMessage.get(count).replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%", EntitySum + "").replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""));
 
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        player.sendMessage(ChatIntToMessage.get(count).replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%", EntitySum + "").replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""));
+                    }
+                    if (ChatConsoleLogFlag){
+                        message.consoleSay(ChatIntToMessage.get(count).replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%", EntitySum + "").replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""));
+                    }
                 }
 
                 if (SoundFlag && SoundIntToMessage.containsKey(count)) {
@@ -457,7 +464,7 @@ public class ClearItemsTask {
 
                                                         PlayerToInventory.put(player, InitPlayerInv(player));
                                                     } else {
-                                                        RemoveItemLore(itemStack);
+                                                        RemoveItemTag(itemStack);
                                                         if (inventory.addItem(itemStack).isEmpty()) {
                                                             //加进去了
                                                             flag = false;

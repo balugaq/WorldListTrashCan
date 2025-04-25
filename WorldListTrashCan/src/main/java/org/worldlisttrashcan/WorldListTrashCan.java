@@ -22,6 +22,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.worldlisttrashcan.AutoTrashMain.AutoTrashListener;
+import org.worldlisttrashcan.AutoTrashMain.HeightVersionPlayerDropItemListener;
 import org.worldlisttrashcan.Bstats.Metrics;
 import org.worldlisttrashcan.DropSystem.DropLimitListener;
 import org.worldlisttrashcan.Method.Method;
@@ -800,6 +801,9 @@ public final class WorldListTrashCan extends JavaPlugin {
         }
 
 
+
+
+
         // 这里要兼容低版本wtc的配置文件路径
 
 //        String OriginPath = "Set.GlobalTrash.OriginalFeatureClearItemAddGlobalTrash";
@@ -810,7 +814,16 @@ public final class WorldListTrashCan extends JavaPlugin {
 
         OriginalFeatureClearItemAddGlobalTrashModel = main.getConfig().getInt(OriginPath+".UseModel");
 
+
+
         NoWorldTrashCanEnterPersonalTrashCan = main.getConfig().getBoolean("Set.PersonalTrashCan.NoWorldTrashCanEnterPersonalTrashCan");
+
+        if(NoWorldTrashCanEnterPersonalTrashCan){
+            HandlerList.unregisterAll(heightVersionPlayerDropItemListener);
+            Bukkit.getPluginManager().registerEvents(heightVersionPlayerDropItemListener, this);
+        }else {
+            HandlerList.unregisterAll(heightVersionPlayerDropItemListener);
+        }
 
 //        if (OriginalFeatureClearItemAddGlobalTrashModel == 0){
 //
@@ -842,6 +855,7 @@ public final class WorldListTrashCan extends JavaPlugin {
     }
 
     AutoTrashListener autoTrashListener = new AutoTrashListener();
+    HeightVersionPlayerDropItemListener heightVersionPlayerDropItemListener = new HeightVersionPlayerDropItemListener();
     DropLimitListener dropLimitListener = new DropLimitListener();
     NotPickArrowListener notPickArrowListener = new NotPickArrowListener();
     QuickSpeakListener quickSpeakListener = new QuickSpeakListener();

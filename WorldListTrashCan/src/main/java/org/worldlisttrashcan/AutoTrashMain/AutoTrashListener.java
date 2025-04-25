@@ -3,6 +3,7 @@ package org.worldlisttrashcan.AutoTrashMain;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -30,7 +31,10 @@ import java.util.UUID;
 
 import static org.worldlisttrashcan.IsVersion.IsFoliaServer;
 import static org.worldlisttrashcan.IsVersion.compareVersions;
+import static org.worldlisttrashcan.Method.Method.getItemStackAllString;
 import static org.worldlisttrashcan.WorldListTrashCan.*;
+import static org.worldlisttrashcan.log.logFlag;
+import static org.worldlisttrashcan.log.startLogToFileTask;
 
 public class AutoTrashListener implements Listener {
 
@@ -49,7 +53,7 @@ public class AutoTrashListener implements Listener {
     public static Boolean VersionFlag = false;
 
     public AutoTrashListener(){
-        VersionFlag = !compareVersions("1.14.0");
+        VersionFlag = !compareVersions("1.16.0");
 //        VersionFlag = true;
     }
 
@@ -82,60 +86,82 @@ public class AutoTrashListener implements Listener {
 //                return;
 //            }
 
+            //保证点到的一定是Gui里的
+            int count = event.getRawSlot();
+            if(count>=0 && count<=53){
 
-//            System.out.println("1");
-            if(main.getConfig().getDouble("Set.PersonalTrashCan.OriginalFeatureClearItemAddGlobalTrash.Model2.Coins")>0){
-                //保证点到的一定是Gui里的
-                if(itemStack==null||!PlayerToInventory.containsValue(event.getClickedInventory())){
-//                    System.out.println("a");
-                    event.setCancelled(true);
-                    return;
-                }
+//                if(itemStack==null||!PlayerToInventory.containsValue(event.getClickedInventory())){
+                if(main.getConfig().getDouble("Set.PersonalTrashCan.OriginalFeatureClearItemAddGlobalTrash.Model2.Coins")>0){
+
+                    if(itemStack==null||itemStack.getType() == Material.AIR){
+                        event.setCancelled(true);
+                        return;
+                    }
+                    //保证点到的一定是Gui里的
 //                System.out.println("2");
-                if(UseMoney(player,Coins)){
+                    if(UseMoney(player,Coins)){
 //                    System.out.println("12");
-                    //使用成功
+                        //使用成功
 
-                    //                    // 创建 DecimalFormat 对象，指定格式为两位小数
-                    //                    DecimalFormat decimalFormat = new DecimalFormat("#.##");
-                    //
-                    //                    // 使用 format 方法将 double 格式化为字符串
-                    //                    String formattedValue = decimalFormat.format(yourDoubleValue);
+                        //                    // 创建 DecimalFormat 对象，指定格式为两位小数
+                        //                    DecimalFormat decimalFormat = new DecimalFormat("#.##");
+                        //
+                        //                    // 使用 format 方法将 double 格式化为字符串
+                        //                    String formattedValue = decimalFormat.format(yourDoubleValue);
 
 
 
-                    if (player.getInventory().addItem(itemStack).isEmpty()) {
-                        //加进去了
-                        DecimalFormat decimalFormat = new DecimalFormat("#.#");
-                        String formattedValue = decimalFormat.format(Coins);
-                        player.sendMessage(message.find("PlayerTrashCanBuySuccessfully").replace("%count%",formattedValue));
-                    }else {
-                        //没加进去 ，背包满了
-                        //UseMoney  负数来给钱
+                        if (player.getInventory().addItem(itemStack).isEmpty()) {
+                            //加进去了
+                        }else {
+                            //没加进去 ，背包满了
+                            //UseMoney  负数来给钱
 //                        UseMoney(player,);
 //                        player.sendMessage(message.find(""));
 
 //                        World world = player.getWorld();
 //                        itemStack.getItemMeta().asItem;
 //                        world.spawnEntity(player.getLocation(),itemStack.getItem);
-                        player.getWorld().dropItem(player.getLocation(),itemStack);
-                    }
+                            player.getWorld().dropItem(player.getLocation(),itemStack);
+                        }
+                        DecimalFormat decimalFormat = new DecimalFormat("#.#");
+                        String formattedValue = decimalFormat.format(Coins);
+                        player.sendMessage(message.find("PlayerTrashCanBuySuccessfully").replace("%count%",formattedValue));
 
 //                    itemStack.setType(Material.AIR);
-                    int clickedSlot = event.getSlot();
+                        int clickedSlot = event.getSlot();
 //                    PlayerToInventory.get(player).removeItem(itemStack);
-                    PlayerToInventory.get(player).clear(clickedSlot);
+                        PlayerToInventory.get(player).clear(clickedSlot);
 
 //                    event.setCancelled(true);
-                }else {
-                    //使用失败
-                    event.setCancelled(true);
-                    player.sendMessage(message.find("PlayerTrashCanBuyFail"));
-                }
+                    }else {
+                        //使用失败
+                        event.setCancelled(true);
+                        player.sendMessage(message.find("PlayerTrashCanBuyFail"));
+                    }
 
+                }else {
+
+                    event.setCancelled(true);
+
+                    if(itemStack!=null&&itemStack.getType() != Material.AIR){
+
+                        //如果只加了一半，也返回false
+                        HashMap<Integer, ItemStack> integerItemStackHashMap = player.getInventory().addItem(itemStack);
+                        if (integerItemStackHashMap.isEmpty()) {
+                            itemStack.setAmount(0);
+                        }
+                    }else {
+                        return;
+                    }
+                }
             }else {
-                return;
+
+                event.setCancelled(true);
             }
+
+//            System.out.println("1");
+
 
 //            System.out.println("你点了这里");
         }
@@ -154,20 +180,19 @@ public class AutoTrashListener implements Listener {
         //测试Vault插件是否可用
 //        testVault(player);
 
-        // 当版本大于1.14 且 NoWorldTrashCanEnterPersonalTrashCan 打开
-        // 将玩家UUID存入Item中
-        if(NoWorldTrashCanEnterPersonalTrashCan && VersionFlag){
-            ItemStack itemStack = item.getItemStack();
-
-            ItemMeta meta = itemStack.getItemMeta();
-            NamespacedKey namespacedKey = new NamespacedKey(main,"PlayerUUID");
-
-            meta.getPersistentDataContainer().set(namespacedKey, PersistentDataType.STRING,player.getUniqueId().toString());
-            itemStack.setItemMeta(meta);
-            item.setItemStack(itemStack);
-
-//            System.out.println("版本大于1.14 可以使用");
-        }
+//        // 当版本大于1.14 且 NoWorldTrashCanEnterPersonalTrashCan 打开
+//        // 将玩家UUID存入Item中
+//        if(NoWorldTrashCanEnterPersonalTrashCan && VersionFlag){
+//            ItemStack itemStack = item.getItemStack();
+//
+//            ItemMeta meta = itemStack.getItemMeta();
+//            NamespacedKey namespacedKey = new NamespacedKey(main,"PlayerUUID");
+//
+//            meta.getPersistentDataContainer().set(namespacedKey, PersistentDataType.STRING,player.getUniqueId().toString());
+//            itemStack.setItemMeta(meta);
+//            item.setItemStack(itemStack);
+//
+//        }
 
 
 
@@ -202,41 +227,7 @@ public class AutoTrashListener implements Listener {
 
 
 
-    //玩家即将捡起物品
-    @EventHandler
-    public void PlayerAttemptPickupItemEvent(PlayerAttemptPickupItemEvent event) {
-        ItemStack itemStack = event.getItem().getItemStack();
-        RemoveItemLore(itemStack);
-    }
-    //漏斗捡起物品
-    @EventHandler
-    public void InventoryPickupItemEvent(InventoryPickupItemEvent event) {
-        ItemStack itemStack = event.getItem().getItemStack();
-        RemoveItemLore(itemStack);
-    }
 
-    //背包切换物品
-    @EventHandler
-    public void InventoryClick(InventoryClickEvent event) {
-        ItemStack itemStack = event.getCurrentItem();
-        RemoveItemLore(itemStack);
-        itemStack = event.getCursor();
-        RemoveItemLore(itemStack);
-        itemStack = event.getWhoClicked().getItemOnCursor();
-        RemoveItemLore(itemStack);
-
-    }
-
-    //移除物品标签
-    public static void RemoveItemLore(ItemStack itemStack) {
-        if (itemStack == null)
-            return;
-        ItemMeta meta = itemStack.getItemMeta();
-        if (meta != null) {
-            NamespacedKey namespacedKey = new NamespacedKey(main, "PlayerUUID");meta.getPersistentDataContainer().remove(namespacedKey);
-            itemStack.setItemMeta(meta);
-        }
-    }
 
 
 
