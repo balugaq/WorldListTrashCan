@@ -3,15 +3,16 @@ package org.worldlisttrashcan;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextColor;
-//import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.worldlisttrashcan.Method.SendMessageAbstract;
+import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,9 +21,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.worldlisttrashcan.IsVersion.Is1_12_1_16Server;
 import static org.worldlisttrashcan.IsVersion.compareVersions;
-import static org.worldlisttrashcan.WorldListTrashCan.*;
-
+import static org.worldlisttrashcan.WorldListTrashCan.main;
 public class message {
 
     private static File messageFile;
@@ -254,4 +255,147 @@ public class message {
             Bukkit.getLogger().info(message.find("NotFindMessage"));
         }
     }
+
+
+//    private static final Pattern rgbPattern = Pattern.compile("&#([A-Fa-f0-9]{6})");
+//
+//    public static BaseComponent[] colorToBaseComponent(String input) {
+//        List<BaseComponent> components = new ArrayList<>();
+//
+//        Matcher matcher = rgbPattern.matcher(input);
+//        int lastIndex = 0;
+//        net.md_5.bungee.api.ChatColor currentColor = null;
+//
+//        while (matcher.find()) {
+//            // 添加前一段纯文字
+//            if (matcher.start() > lastIndex) {
+//                String beforeText = input.substring(lastIndex, matcher.start());
+//                TextComponent beforeComponent = new TextComponent(beforeText);
+//                if (currentColor != null) {
+//                    beforeComponent.setColor(currentColor);
+//                }
+//                components.add(beforeComponent);
+//            }
+//
+//            // 更新颜色
+//            String hexColor = matcher.group(1);
+//            currentColor = net.md_5.bungee.api.ChatColor.of("#" + hexColor);
+//            lastIndex = matcher.end();
+//        }
+//
+//        // 添加最后一段
+//        if (lastIndex < input.length()) {
+//            String remaining = input.substring(lastIndex);
+//            TextComponent remainingComponent = new TextComponent(remaining);
+//            if (currentColor != null) {
+//                remainingComponent.setColor(currentColor);
+//            }
+//            components.add(remainingComponent);
+//        }
+//
+//        return components.toArray(new BaseComponent[0]);
+//    }
+
+
+
+    public static void sendChatMessageToAction(Player player, String text, ClickEvent.Action action, String command){
+        if(Is1_12_1_16Server){
+            TextComponent message = new TextComponent(color(text));
+            message.setClickEvent(new ClickEvent(action, command));
+            player.spigot().sendMessage(message);
+        }else {
+            BaseComponent[] components = colorToBaseComponent(text);
+            TextComponent message = new TextComponent(components);
+            message.setClickEvent(new ClickEvent(action, command));
+            player.spigot().sendMessage(message);
+        }
+    }
+
+
+
+    private static final Pattern pattern = Pattern.compile("(?:(?<rgb>&#([A-Fa-f0-9]{6}))|(?<legacy>&[0-9a-fk-or]))", Pattern.CASE_INSENSITIVE);
+
+    public static BaseComponent[] colorToBaseComponent(String input) {
+        List<BaseComponent> components = new ArrayList<>();
+        Matcher matcher = pattern.matcher(input);
+
+        int lastIndex = 0;
+        net.md_5.bungee.api.ChatColor currentColor = null;
+        boolean bold = false, italic = false, underlined = false, strikethrough = false, obfuscated = false;
+
+        while (matcher.find()) {
+            // 添加之前的文本
+            if (matcher.start() > lastIndex) {
+                String text = input.substring(lastIndex, matcher.start());
+                if (!text.isEmpty()) {
+                    TextComponent comp = new TextComponent(text);
+                    if (currentColor != null) comp.setColor(currentColor);
+                    comp.setBold(bold);
+                    comp.setItalic(italic);
+                    comp.setUnderlined(underlined);
+                    comp.setStrikethrough(strikethrough);
+                    comp.setObfuscated(obfuscated);
+                    components.add(comp);
+                }
+            }
+
+            // 解析颜色或格式码
+            if (matcher.group("rgb") != null) {
+                currentColor = net.md_5.bungee.api.ChatColor.of("#" + matcher.group(2));
+            } else if (matcher.group("legacy") != null) {
+                char code = Character.toLowerCase(matcher.group("legacy").charAt(1));
+                net.md_5.bungee.api.ChatColor format = net.md_5.bungee.api.ChatColor.getByChar(code);
+                if (format == null) continue;
+
+                if ("0123456789abcdef".indexOf(code) != -1) {
+                    // 是颜色码
+                    currentColor = format;
+                    bold = italic = underlined = strikethrough = obfuscated = false;
+                } else {
+                    // 是格式码
+                    switch (code) {
+                        case 'l':
+                            bold = true;
+                            break;
+                        case 'o':
+                            italic = true;
+                            break;
+                        case 'n':
+                            underlined = true;
+                            break;
+                        case 'm':
+                            strikethrough = true;
+                            break;
+                        case 'k':
+                            obfuscated = true;
+                            break;
+                        case 'r':
+                            currentColor = null;
+                            bold = italic = underlined = strikethrough = obfuscated = false;
+                            break;
+                    }
+                }
+            }
+
+            lastIndex = matcher.end();
+        }
+
+        // 添加剩余部分
+        if (lastIndex < input.length()) {
+            String text = input.substring(lastIndex);
+            if (!text.isEmpty()) {
+                TextComponent comp = new TextComponent(text);
+                if (currentColor != null) comp.setColor(currentColor);
+                comp.setBold(bold);
+                comp.setItalic(italic);
+                comp.setUnderlined(underlined);
+                comp.setStrikethrough(strikethrough);
+                comp.setObfuscated(obfuscated);
+                components.add(comp);
+            }
+        }
+
+        return components.toArray(new BaseComponent[0]);
+    }
+
 }

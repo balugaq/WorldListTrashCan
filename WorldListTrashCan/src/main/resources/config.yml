@@ -233,6 +233,9 @@ Set:
   ChatFlag: true
   #是否在控制台也显示聊天栏的倒计时（仅限聊天栏提示方式）
   ChatConsoleLogFlag: true
+  #当播到0时，玩家点击聊天框的该信息后，以玩家身份执行的指令
+  # (打开公共垃圾桶)
+  ChatClickCommand: "/worldlisttrashcan globaltrash"
   #当读秒到达以下数字时会进行一次信息的发送   如  &d&l还剩下 60 秒清理物品和实体
   #%DealItemSum%为处理的物品总数（包括回收进任意垃圾桶的也包括被清理的）
   #%GlobalTrashAddSum%为进入公共垃圾桶的物品总数
@@ -244,7 +247,7 @@ Set:
     - 3;&c3秒
     - 2;&c2秒
     - 1;&c1秒
-    - 0;&a清理成功，有%DealItemSum%个物品被回收，有%GlobalTrashAddSum%个物品加入了公共垃圾桶，有%EntitySum%个生物被清理
+    - 0;&a清理成功，有%DealItemSum%个物品被回收，有%GlobalTrashAddSum%个物品加入了公共垃圾桶，有%EntitySum%个生物被清理 &6(点我打开垃圾桶)
     #-1和-2是设置清理公共垃圾桶时的提醒，如果本次没有清理公共垃圾桶，则输出-1的提醒，如果本次清理公共垃圾桶，则输出-2的提醒
     #该提醒是在清理垃圾后，延迟2秒发送的提醒
     - -1;&d还有%ClearGlobalCount%次清理，公共垃圾桶

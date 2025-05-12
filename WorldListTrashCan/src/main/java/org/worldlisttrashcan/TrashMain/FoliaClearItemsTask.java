@@ -2,6 +2,10 @@ package org.worldlisttrashcan.TrashMain;
 
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -22,7 +26,8 @@ import static org.worldlisttrashcan.Method.Method.isMonster;
 import static org.worldlisttrashcan.TrashMain.GlobalTrashGui.ClearContainer;
 import static org.worldlisttrashcan.TrashMain.TrashListener.GlobalItemSetString;
 import static org.worldlisttrashcan.WorldListTrashCan.*;
-import static org.worldlisttrashcan.message.color;
+import static org.worldlisttrashcan.message.*;
+
 import org.worldlisttrashcan.message;
 
 public class FoliaClearItemsTask {
@@ -76,6 +81,7 @@ public class FoliaClearItemsTask {
         boolean BossBarFlag = main.getConfig().getBoolean("Set.BossBarFlag");
         boolean ChatFlag = main.getConfig().getBoolean("Set.ChatFlag");
         boolean ChatConsoleLogFlag = main.getConfig().getBoolean("Set.ChatConsoleLogFlag");
+        String ChatClickCommand = main.getConfig().getString("Set.ChatClickCommand");
         boolean SoundFlag = main.getConfig().getBoolean("Set.SoundFlag");
         boolean TitleFlag = main.getConfig().getBoolean("Set.TitleFlag");
         boolean CommandFlag = main.getConfig().getBoolean("Set.CommandFlag");
@@ -93,7 +99,8 @@ public class FoliaClearItemsTask {
         Map<Integer, String> ChatIntToMessage = new HashMap<>();
         for (String message : main.getConfig().getStringList("Set.ChatMessageForCount")) {
             String[] strings = message.split(";");
-            ChatIntToMessage.put(Integer.parseInt(strings[0]), color(strings[1]));
+//            ChatIntToMessage.put(Integer.parseInt(strings[0]), color(strings[1]));
+            ChatIntToMessage.put(Integer.parseInt(strings[0]), strings[1]);
         }
 
 
@@ -212,7 +219,22 @@ public class FoliaClearItemsTask {
 
                 if (ChatFlag && ChatIntToMessage.containsKey(count)) {
                     for (Player player : Bukkit.getOnlinePlayers()) {
-                        player.sendMessage(ChatIntToMessage.get(count).replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%", EntitySum + "").replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""));
+                        String text = ChatIntToMessage.get(count).replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "")
+                                .replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%", EntitySum + "")
+                                .replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + "");
+
+//                        BaseComponent[] components = colorToBaseComponent(text);
+
+                        //如果是最后一次播报
+                        if(count==0&&(ChatClickCommand!=null&&!ChatClickCommand.isEmpty())){
+//                            TextComponent message = new TextComponent(components);
+//                            message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, ChatClickCommand));
+//                            player.spigot().sendMessage(message);
+                            sendChatMessageToAction(player,text,ClickEvent.Action.RUN_COMMAND,ChatClickCommand);
+
+                        }else {
+                            player.sendMessage(color(text));
+                        }
                     }
                     if (ChatConsoleLogFlag){
                         message.consoleSay(ChatIntToMessage.get(count).replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%", EntitySum + "").replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""));
