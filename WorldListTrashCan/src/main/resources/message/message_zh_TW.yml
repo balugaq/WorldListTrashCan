@@ -61,6 +61,8 @@ ChunkEntityList: "%PluginTitle% &#9AFF9A當前區塊的實體清單 （點擊可
 
 BanWorldTrashCanInFoliaServer: "%PluginTitle% &#9AFF9A在Folia服務器中無法創建世界垃圾桶（但你可以使用玩家垃圾桶和全球垃圾桶）"
 
+GlobalTrashPickupDelay: "%PluginTitle% &#9AFF9A你還需要等待%time%秒才能再次拿取垃圾桶物品"
+
 HelpTitle:
   - "&l&#7472a5——————&r&7【&#a1b2ffWorldListTrashCan&7】&l&#7472a5——————"
   - "&#ccffbbWorldListTrashCan 可簡寫為WTC 如/wtc reload"

@@ -1,25 +1,22 @@
 package org.worldlisttrashcan.TrashMain;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.worldlisttrashcan.message;
 
-import java.util.*;
+import static org.worldlisttrashcan.message.*;
+import java.util.HashMap;
 
-import static org.worldlisttrashcan.IsVersion.*;
 import static org.worldlisttrashcan.Method.Method.getItemStackAllString;
 import static org.worldlisttrashcan.WorldListTrashCan.GlobalTrashList;
 import static org.worldlisttrashcan.WorldListTrashCan.main;
-import static org.worldlisttrashcan.log.*;
+import static org.worldlisttrashcan.log.logFlag;
+import static org.worldlisttrashcan.log.startLogToFileTask;
 
 
 public class GuiListener implements Listener {
@@ -29,6 +26,8 @@ public class GuiListener implements Listener {
 
 
 
+    //记录玩家点击的时间戳
+    public static HashMap<Player, Long> playerClickTimeStamp = new HashMap<>();
 
 
 
@@ -47,7 +46,7 @@ public class GuiListener implements Listener {
 
 //        System.out.println("-----------");
 //        System.out.println("event.getHotbarButton()"+event.getHotbarButton());
-//        System.out.println("event.getSlot()"+event.getSlot());
+//        System.out.println("event.getRawSlot()"+event.getRawSlot());
 //        System.out.println("event.getRawSlot()"+event.getRawSlot());
 //        System.out.println("-----------");
 
@@ -78,7 +77,35 @@ public class GuiListener implements Listener {
                     //记录原数量
                     int amount = itemStack.getAmount();
                     //如果只加了一半，也返回false
+
+
+
+                    Long time = playerClickTimeStamp.getOrDefault(player,0L);
+//                    if(time==null){
+//                        time = 0L;
+//                        playerClickTimeStamp.put(player, System.currentTimeMillis());
+//                    }
+                    long timeConfig = main.getConfig().getLong("Set.GlobalTrash.Delay");
+                    //如果获取到的time加上timeConfig秒，大于当前时间戳
+                    if (time+timeConfig>=System.currentTimeMillis()){
+                        long shengyu = (timeConfig - (System.currentTimeMillis() - time))/100L;
+                        String timeStr = String.valueOf(shengyu);
+//                        timeStr = timeStr.equals("0") ?"0" : timeStr.substring(0, timeStr.length() - 1) + "." + timeStr.substring(timeStr.length() - 1);
+                        timeStr = shengyu<10 ?"0."+timeStr : timeStr.substring(0, timeStr.length() - 1) + "." + timeStr.substring(timeStr.length() - 1);
+//                        System.out.println("当前时间戳: " + System.currentTimeMillis());
+//                        System.out.println("Redis 时间戳: " + time);
+//                        System.out.println("当前时间戳减Redis时间戳 " + (System.currentTimeMillis() - time));
+//                        System.out.println("冷却时间配置: " + timeConfig*1000L);
+//                        System.out.println("剩余冷却时间: " + shengyu);
+                        message.consoleSay(player, message.find("GlobalTrashPickupDelay").replace("%time%",timeStr));
+                        return;
+                    }
+
                     HashMap<Integer, ItemStack> integerItemStackHashMap = player.getInventory().addItem(itemStack);
+
+                    playerClickTimeStamp.put(player, System.currentTimeMillis());
+
+
                     if (integerItemStackHashMap.isEmpty()) {
                         String finalItem = getItemStackAllString(itemStack,amount);
                         itemStack.setAmount(0);
@@ -95,6 +122,35 @@ public class GuiListener implements Listener {
 
                             if(logFlag){
                                 startLogToFileTask(playerName, "-", finalItem);
+                            }
+                        }
+                    }
+                }
+
+            }else if (count>=54 && count<=89 && main.getConfig().getBoolean("Set.GlobalTrash.AllowPutItemInGlobalTrash")) {
+                ItemStack itemStack = player.getInventory().getItem(event.getSlot());
+                if (itemStack != null && itemStack.getType() != Material.AIR) {
+
+                    //记录原数量
+                    int amount = itemStack.getAmount();
+                    HashMap<Integer, ItemStack> integerItemStackHashMap = inventory.addItem(itemStack);
+
+                    if (integerItemStackHashMap.isEmpty()) {
+
+                        String finalItem = getItemStackAllString(itemStack,amount);
+                        itemStack.setAmount(0);
+                        if(logFlag) {
+                            startLogToFileTask(playerName, "+", finalItem);
+                        }
+                    }else {
+                        //没加进去的物品
+                        ItemStack itemStack1 = integerItemStackHashMap.get(0);
+                        //剩余物品数量
+                        int shengyu = itemStack1.getAmount();
+                        if (amount-shengyu>0){
+                            String finalItem = getItemStackAllString(itemStack,amount-shengyu);
+                            if(logFlag){
+                                startLogToFileTask(playerName, "+", finalItem);
                             }
                         }
                     }

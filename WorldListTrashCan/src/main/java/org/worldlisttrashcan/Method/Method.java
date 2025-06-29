@@ -1,5 +1,6 @@
 package org.worldlisttrashcan.Method;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
@@ -9,6 +10,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Enemy;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.worldlisttrashcan.message;
@@ -19,6 +21,8 @@ import java.util.Map;
 
 import static org.worldlisttrashcan.IsVersion.Is1_16_1_20Server;
 import static org.worldlisttrashcan.IsVersion.Is1_21_1_20Server;
+import static org.worldlisttrashcan.WorldListTrashCan.main;
+import static org.worldlisttrashcan.WorldListTrashCan.papi;
 
 public class Method {
 
@@ -264,6 +268,16 @@ public class Method {
         }
 
         return false;
+    }
+
+
+    //将字符串替换papi变量
+    public static String papiReplace(String message, Player player) {
+        if (papi==null) {
+            return message;
+        }
+        //如果papi有的话
+        return PlaceholderAPI.setPlaceholders(player, message);
     }
 
 

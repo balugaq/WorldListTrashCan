@@ -60,6 +60,9 @@ HandItem: "%PluginTitle% &aMain Hand Item is %item%"
 ChunkEntityList: "%PluginTitle% &aList of all entities in the current chunk (Click to copy)"
 
 BanWorldTrashCanInFoliaServer: "%PluginTitle% &cCannot create world trash cans in Folia server (but you can use player trash cans and global trash cans)"
+
+GlobalTrashPickupDelay: "%PluginTitle% &aYou still need to wait% time% seconds to retrieve the trash can items again"
+
 HelpTitle:
   - "&l&0——————&r&7【&bWorldListTrashCan&7】&l&0——————"
   - "&6WorldListTrashCan can be abbreviated as WTC.Such as/wtc reload"

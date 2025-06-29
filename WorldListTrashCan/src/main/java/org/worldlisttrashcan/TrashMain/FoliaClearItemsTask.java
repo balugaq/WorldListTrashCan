@@ -2,10 +2,7 @@ package org.worldlisttrashcan.TrashMain;
 
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -15,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.worldlisttrashcan.data;
+import org.worldlisttrashcan.message;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -23,12 +21,12 @@ import java.util.function.Consumer;
 import static org.worldlisttrashcan.AutoTrashMain.AutoTrashListener.*;
 import static org.worldlisttrashcan.AutoTrashMain.HeightVersionPlayerDropItemListener.RemoveItemTag;
 import static org.worldlisttrashcan.Method.Method.isMonster;
+import static org.worldlisttrashcan.Method.Method.papiReplace;
 import static org.worldlisttrashcan.TrashMain.GlobalTrashGui.ClearContainer;
 import static org.worldlisttrashcan.TrashMain.TrashListener.GlobalItemSetString;
 import static org.worldlisttrashcan.WorldListTrashCan.*;
-import static org.worldlisttrashcan.message.*;
-
-import org.worldlisttrashcan.message;
+import static org.worldlisttrashcan.message.color;
+import static org.worldlisttrashcan.message.sendChatMessageToAction;
 
 public class FoliaClearItemsTask {
     List<World> WorldList = new ArrayList<>();
@@ -50,24 +48,22 @@ public class FoliaClearItemsTask {
                 return true;
             }
         }
-//        ItemStack itemStack = item.getItemStack();
         ItemMeta itemMeta = itemStack.getItemMeta();
-//        boolean flag = false;
-//        System.out.println("1");
         if (itemMeta != null && itemMeta.getLore() != null) {
             List<String> strings = itemMeta.getLore();
             for (String lore : NoClearContainerLore) {
-//                System.out.println("lore "+lore);
-//                System.out.println("lores "+itemMeta.getLore());
                 for (String string : strings) {
                     if (string.contains(lore)) {
-//                    flag = true;
-//                    break;
-//                        System.out.println("12");
                         return true;
                     }
                 }
-
+            }
+        }
+        if (itemMeta != null && itemMeta.getDisplayName() != null) {
+            for (String customName : NoClearContainerName) {
+                if (itemMeta.getDisplayName().contains(customName)){
+                    return true;
+                }
             }
         }
         return false;
@@ -149,6 +145,7 @@ public class FoliaClearItemsTask {
         boolean ClearExpBottle = main.getConfig().getBoolean("Set.ClearEntity.ClearExpBottle");
         boolean ClearMonster = main.getConfig().getBoolean("Set.ClearEntity.ClearMonster");
         boolean ClearAnimals = main.getConfig().getBoolean("Set.ClearEntity.ClearAnimals");
+        boolean ClearProjectile = main.getConfig().getBoolean("Set.ClearEntity.ClearProjectile");
         boolean ClearReNameEntity = main.getConfig().getBoolean("Set.ClearEntity.ClearReNameEntity");
 
         List<String> WhiteNameList = main.getConfig().getStringList("Set.ClearEntity.WhiteNameList");
@@ -205,7 +202,7 @@ public class FoliaClearItemsTask {
                             } else {
                             }
                         }
-                        bossBar.setTitle(message);
+                        bossBar.setTitle(papiReplace(message,player));
                         bossBar.setColor(BarColor.valueOf(strings[2]));
                         bossBar.setStyle(BarStyle.valueOf(strings[1]));
                         double ct = ((double) count) / bossBarMaxInt;
@@ -222,6 +219,7 @@ public class FoliaClearItemsTask {
                         String text = ChatIntToMessage.get(count).replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "")
                                 .replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%", EntitySum + "")
                                 .replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + "");
+                        text = papiReplace(text,player);
 
 //                        BaseComponent[] components = colorToBaseComponent(text);
 
@@ -251,12 +249,12 @@ public class FoliaClearItemsTask {
                 if (ActionBarFlag && ActionBarIntToMessage.containsKey(count)) {
                     for (Player player : Bukkit.getOnlinePlayers()) {
 
-                        sendMessageAbstract.sendActionBar(player, ActionBarIntToMessage.get(count)
-                                .replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "")
-                                .replace("%DealItemSum%", DealItemSum + "")
+                        String actionbarMessage = ActionBarIntToMessage.get(count)
+                                .replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "")
                                 .replace("%EntitySum%", EntitySum + "")
-                                .replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""));
-
+                                .replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + "");
+                        actionbarMessage = papiReplace(actionbarMessage,player);
+                        sendMessageAbstract.sendActionBar(player,actionbarMessage);
 
                     }
                 }
@@ -293,10 +291,28 @@ public class FoliaClearItemsTask {
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         if (TitleIntToMessage.get(count).contains(";")) {
                             String[] strings = TitleIntToMessage.get(count).split(";");
-                            player.sendTitle(strings[0].replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%", EntitySum + "").replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""),
-                                    strings[1].replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%", EntitySum + "").replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""), 10, 70, 20);
+                            String titleBigMessage = strings[0].replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "").
+                                    replace("%DealItemSum%", DealItemSum + "").
+                                    replace("%EntitySum%", EntitySum + "").
+                                    replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + "");
+                            String titleSmallMessage = strings[1].replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "").
+                                    replace("%DealItemSum%", DealItemSum + "").
+                                    replace("%EntitySum%", EntitySum + "").
+                                    replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + "");
+
+                            titleBigMessage = papiReplace(titleBigMessage,player);
+                            titleSmallMessage = papiReplace(titleSmallMessage,player);
+
+                            player.sendTitle( titleBigMessage,titleSmallMessage
+                                    , 10, 70, 20);
                         } else {
-                            player.sendTitle(TitleIntToMessage.get(count).replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "").replace("%DealItemSum%", DealItemSum + "").replace("%EntitySum%", EntitySum + "").replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + ""), "", 10, 70, 20);
+                            String titleBigMessage = TitleIntToMessage.get(count).
+                                    replace("%GlobalTrashAddSum%", GlobalTrashItemSum + "").
+                                    replace("%DealItemSum%", DealItemSum + "").
+                                    replace("%EntitySum%", EntitySum + "").
+                                    replace("%ClearGlobalCount%", EveryClearGlobalTrash - ClearCount + "");
+                            titleBigMessage = papiReplace(titleBigMessage,player);
+                            player.sendTitle(titleBigMessage, "", 10, 70, 20);
                         }
 
                     }
@@ -532,6 +548,13 @@ public class FoliaClearItemsTask {
                                                             entity.remove();
                                                             EntitySum++;
 
+                                                            continue;
+                                                        }
+                                                    }else if (entity instanceof Projectile) {
+                                                        if (ClearProjectile) {
+                                                            entity.remove();
+//                                            System.out.println("ClearMonster: "+entity.getType().toString());
+                                                            EntitySum++;
                                                             continue;
                                                         }
                                                     }

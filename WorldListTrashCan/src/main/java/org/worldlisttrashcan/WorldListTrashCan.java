@@ -171,6 +171,8 @@ public final class WorldListTrashCan extends JavaPlugin {
 //    public static List<Inventory> RemoveGlobalTrashList = new ArrayList<>();
 
 
+    public static Papi papi = null;
+
 
     static public boolean EconomyFlag = false;
 
@@ -229,7 +231,8 @@ public final class WorldListTrashCan extends JavaPlugin {
 
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            new Papi(this).register();
+            papi = new Papi(this);
+            papi.register();
         }else {
             message.consoleSay("&c没有找到PlaceholderAPI插件，已自动关闭相关功能");
         }
@@ -685,6 +688,7 @@ public final class WorldListTrashCan extends JavaPlugin {
 //    static public data data;
 
     public static List<String> NoClearContainerLore = new ArrayList<>();
+    public static List<String> NoClearContainerName = new ArrayList<>();
     public static List<String> NoClearContainerType = new ArrayList<>();
     public void reload(){
 //        reloadConfig();
@@ -847,6 +851,7 @@ public final class WorldListTrashCan extends JavaPlugin {
 //        TreadingFarmLandListener
         LoadWorldLimitEntityConfig();
         NoClearContainerLore = main.getConfig().getStringList("Set.NoClearContainerLore");
+        NoClearContainerName = main.getConfig().getStringList("Set.NoClearContainerName");
         NoClearContainerType = main.getConfig().getStringList("Set.NoClearContainerType");
 
 

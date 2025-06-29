@@ -171,6 +171,8 @@ public class AutoTrashListener implements Listener {
 
 
 
+
+
     @EventHandler
     public void PlayerDropItemEvent(PlayerDropItemEvent event){
         Item item = event.getItemDrop();

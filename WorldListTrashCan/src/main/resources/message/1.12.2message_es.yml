@@ -61,6 +61,8 @@ ChunkEntityList: "%PluginTitle% &aLista de todas las entidades en el fragmento a
 
 BanWorldTrashCanInFoliaServer: "%PluginTitle% &cNo se puede crear el bote de basura mundial en el servidor Folia (pero se puede usar el bote de basura del jugador y el bote de basura global)"
 
+GlobalTrashPickupDelay: "%PluginTitle% &aAnda perlu menunggu %time%s untuk mengambil item sampah lagi."
+
 HelpTitle:
   - "&l&0——————&r&7【&bPapelera de la lista mundial&7】&l&0——————"
   - "&6WorldListTrashCan se puede abreviar como WTC. usa /wtc reload"
@@ -74,4 +76,3 @@ HelpTitle:
   - "&6/WorldListTrashCan DropMode &dPrende o apaga DropMode"
   - "&6/WorldListTrashCan PlayerTrash &dAbrir bote de basura personal"
   - "&6/WorldListTrashCan Clear &6Realice inmediatamente una limpieza de basura (la cuenta regresiva se reiniciará después)"
-

@@ -18,7 +18,8 @@ import static org.worldlisttrashcan.IsVersion.IsFoliaServer;
 import static org.worldlisttrashcan.WorldListTrashCan.main;
 
 public class QuickUseCommandListener implements Listener {
-    public static Map<Player,String> PlayerToCommand = new HashMap<>();
+//    public static Map<Player,String> PlayerToCommand = new HashMap<>();
+    public static Map<Player,Long> PlayerToCommand = new HashMap<>();
     String NotUseCommandMessage = "不要频繁用指令";
 
     double Time = 2;
@@ -63,30 +64,53 @@ public class QuickUseCommandListener implements Listener {
             return;
         }
 
-        if(PlayerToCommand.get(player)!=null){
-//            System.out.println(PlayerToCommand);
-
-            event.setCancelled(true);
-            player.sendMessage(NotUseCommandMessage);
-        }else {
-            PlayerToCommand.put(player,Command);
-            if(IsFoliaServer){
-                player.getScheduler().runDelayed(main, new Consumer<ScheduledTask>() {
-                    @Override
-                    public void accept(ScheduledTask scheduledTask) {
-                        PlayerToCommand.remove(player);
-//                        System.out.println("!");
-                    }
-                }, () -> main.getLogger().info("Error,Player is null"),(long) (20*Time));
-            }else {
-                new BukkitRunnable(){
-                    @Override
-                    public void run() {
-                        PlayerToCommand.remove(player);
-                    }
-                }.runTaskLater(WorldListTrashCan.main, (long) (20*Time));
-            }
-
+        if(event.isCancelled()||player.isOp()){
+            return;
         }
+
+        if(PlayerToCommand.get(player)!=null){
+
+            //计算时间戳与当前时间戳的间隔（单位秒）
+            long interval = (System.currentTimeMillis() - PlayerToCommand.get(player)) / 1000;
+            //如果时间间隔小于限制时间
+            if (interval < Time) {
+                event.setCancelled(true);
+                player.sendMessage(NotUseCommandMessage);
+            }else {
+                PlayerToCommand.put(player,System.currentTimeMillis());
+            }
+        }else {
+            //记录玩家当前聊天的时间戳
+            PlayerToCommand.put(player,System.currentTimeMillis());
+        }
+
+
+
+
+//        if(PlayerToCommand.get(player)!=null){
+////            System.out.println(PlayerToCommand);
+//
+//            event.setCancelled(true);
+//            player.sendMessage(NotUseCommandMessage);
+//        }else {
+//            PlayerToCommand.put(player,Command);
+//            if(IsFoliaServer){
+//                player.getScheduler().runDelayed(main, new Consumer<ScheduledTask>() {
+//                    @Override
+//                    public void accept(ScheduledTask scheduledTask) {
+//                        PlayerToCommand.remove(player);
+////                        System.out.println("!");
+//                    }
+//                }, () -> main.getLogger().info("Error,Player is null"),(long) (20*Time));
+//            }else {
+//                new BukkitRunnable(){
+//                    @Override
+//                    public void run() {
+//                        PlayerToCommand.remove(player);
+//                    }
+//                }.runTaskLater(WorldListTrashCan.main, (long) (20*Time));
+//            }
+//
+//        }
     }
 }
