@@ -3,5 +3,8 @@ WorldListTrashCan/.idea/
 WorldListTrashCan/target/
 WorldListTrashCan/.git/
 WorldListTrashCan/.gitignore
-WorldListTrashCan/pom.xml
+pom.xml
 WorldListTrashCan/WorldListTrashCan.iml
+
+# Changed ↓
+.idea/
