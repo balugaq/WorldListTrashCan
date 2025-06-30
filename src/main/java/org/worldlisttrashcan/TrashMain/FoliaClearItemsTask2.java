@@ -10,13 +10,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
-import org.jetbrains.annotations.NotNull;
 import org.worldlisttrashcan.data;
 import org.worldlisttrashcan.message;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentSkipListMap;
-import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
@@ -353,7 +351,7 @@ public class FoliaClearItemsTask2 {
                                                     continue;
                                                 }
 
-                                                if (ClearItemsTask.isSlimefunItemAndIsSlimefunCoreItem(itemStack)) {
+                                                if (ClearItemsTask.isSlimefunItemAndIsNotSlimefunCoreItem(itemStack)) {
                                                     DealItemSum.set(DealItemSum.get()+1);
                                                     item.remove();
                                                     continue;

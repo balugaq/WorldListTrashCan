@@ -2,10 +2,7 @@ package org.worldlisttrashcan.TrashMain;
 
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -400,7 +397,7 @@ public class FoliaClearItemsTask {
                                                     continue;
                                                 }
 
-                                                if (ClearItemsTask.isSlimefunItemAndIsSlimefunCoreItem(itemStack)) {
+                                                if (ClearItemsTask.isSlimefunItemAndIsNotSlimefunCoreItem(itemStack)) {
                                                     DealItemSum++;
                                                     item.remove();
                                                     continue;

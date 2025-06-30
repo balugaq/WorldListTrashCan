@@ -1,9 +1,7 @@
 package org.worldlisttrashcan.TrashMain;
 
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -421,7 +419,7 @@ public class ClearItemsTask {
                                         continue;
                                     }
 
-                                    if (ClearItemsTask.isSlimefunItemAndIsSlimefunCoreItem(itemStack)) {
+                                    if (ClearItemsTask.isSlimefunItemAndIsNotSlimefunCoreItem(itemStack)) {
                                         DealItemSum++;
                                         item.remove();
                                         continue;
@@ -673,13 +671,13 @@ public class ClearItemsTask {
         return ChatColor.stripColor(meta.getDisplayName()).contains("ALTAR Probe");
     }
 
-    public static boolean isSlimefunItemAndIsSlimefunCoreItem(@org.jetbrains.annotations.Nullable ItemStack itemStack) {
+    public static boolean isSlimefunItemAndIsNotSlimefunCoreItem(@org.jetbrains.annotations.Nullable ItemStack itemStack) {
         io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem sf = io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem.getByItem(itemStack);
         if (sf == null) {
             return false;
         }
 
-        return sf.getAddon() == io.github.thebusybiscuit.slimefun4.implementation.Slimefun.instance();
+        return sf.getAddon() != io.github.thebusybiscuit.slimefun4.implementation.Slimefun.instance();
     }
     // balugaq - Add Slimefun check end
 }
