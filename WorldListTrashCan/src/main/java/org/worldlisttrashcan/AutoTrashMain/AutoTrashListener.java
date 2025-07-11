@@ -4,37 +4,27 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryPickupItemEvent;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.jetbrains.annotations.NotNull;
 import org.worldlisttrashcan.message;
 
-import java.awt.event.ItemEvent;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import static org.worldlisttrashcan.IsVersion.IsFoliaServer;
 import static org.worldlisttrashcan.IsVersion.compareVersions;
-import static org.worldlisttrashcan.Method.Method.getItemStackAllString;
 import static org.worldlisttrashcan.WorldListTrashCan.*;
-import static org.worldlisttrashcan.log.logFlag;
-import static org.worldlisttrashcan.log.startLogToFileTask;
+import static org.worldlisttrashcan.message.consoleSay;
 
 public class AutoTrashListener implements Listener {
 
@@ -63,10 +53,16 @@ public class AutoTrashListener implements Listener {
 //        System.out.println("1");
 
         Player player = (Player) event.getWhoClicked();
+
+
+
+
 //        Inventory inventory = event.getClickedInventory();
         Inventory inventory = event.getInventory();
 
         if (PlayerToInventory.containsValue(inventory)) {
+
+
 
 
             //点击的物品
@@ -261,7 +257,7 @@ public class AutoTrashListener implements Listener {
         } else {
             // 处理经济系统不可用的情况
 //            player.sendMessage("经济系统不可用！");
-            main.getLogger().info(message.find("VaultError"));
+            consoleSay(message.find("VaultError"));
             return true;
         }
 

@@ -60,8 +60,6 @@ public class GuiListener implements Listener {
             //无论如何都不允许玩家直接拖动，所以直接取消
             event.setCancelled(true);
 
-
-
             int count = event.getRawSlot();
             if(count>=45 && count<=53){
                 //上一页
@@ -72,6 +70,13 @@ public class GuiListener implements Listener {
                     player.openInventory(GlobalTrashList.get(PageIndex+1));
                 }
             }else if (count>=0 && count<=44) {
+
+                // 如果玩家没有使用权限
+                if (!player.isOp()&&!player.hasPermission("WorldListTrashCan.GlobalTrashTakeItem")) {
+                    return;
+                }
+
+
                 ItemStack itemStack = inventory.getItem(count);
                 if (itemStack != null && itemStack.getType() != Material.AIR) {
                     //记录原数量
@@ -128,6 +133,12 @@ public class GuiListener implements Listener {
                 }
 
             }else if (count>=54 && count<=89 && main.getConfig().getBoolean("Set.GlobalTrash.AllowPutItemInGlobalTrash")) {
+
+                // 如果玩家没有放入权限
+                if (!player.isOp()&&!player.hasPermission("WorldListTrashCan.GlobalTrashPutItem")) {
+                    return;
+                }
+
                 ItemStack itemStack = player.getInventory().getItem(event.getSlot());
                 if (itemStack != null && itemStack.getType() != Material.AIR) {
 

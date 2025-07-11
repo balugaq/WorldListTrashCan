@@ -638,7 +638,7 @@ public class ClearItemsTask {
                         }
 
                     }catch (Exception e){
-                        main.getLogger().info(ChatColor.RED+"该服务器环境似乎不兼容此插件的某些功能，请将报错截图发送至作者QQ 2831508831");
+                        consoleSay(ChatColor.RED+"该服务器环境似乎不兼容此插件的某些功能，请将报错截图发送至作者QQ 2831508831");
                         throw e;
                     }finally {
 

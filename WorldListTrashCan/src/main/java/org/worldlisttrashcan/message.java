@@ -17,7 +17,9 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -75,9 +77,17 @@ public class message {
     }
 
     public static void consoleSay(String message){
+        if (message==null||message.trim().isEmpty()){
+            return;
+        }
         Bukkit.getConsoleSender().sendMessage(color(pluginTitle+" "+message));
     }
     public static void consoleSay(CommandSender commandSender, String message) {
+        if (message==null||message.trim().isEmpty()){
+            return;
+        }
+
+
         if (commandSender == null) {
             Bukkit.getConsoleSender().sendMessage(color( message.replace("%PluginTitle%",pluginTitle)));
         } else {
@@ -239,11 +249,16 @@ public class message {
         return file.renameTo(newFile);
     }
 
+    public static Set<String> notFindMessageSlave = new HashSet<>();
+
     public static String find(String path){
         if(message.getConfig().getString(path)!=null&&!message.getConfig().getString(path).isEmpty()){
             return message.getConfig().getString(path);
         }else {
-            main.getLogger().info(message.find("NotFindMessageSlave").replace("%path%",path));
+            if (!notFindMessageSlave.contains(path)) {
+                consoleSay(message.find("NotFindMessageSlave").replace("%path%", path));
+                notFindMessageSlave.add(path);
+            }
             return " ";
         }
     }

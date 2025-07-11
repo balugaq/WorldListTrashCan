@@ -19,8 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.worldlisttrashcan.IsVersion.Is1_16_1_20Server;
-import static org.worldlisttrashcan.IsVersion.Is1_21_1_20Server;
+import static org.worldlisttrashcan.IsVersion.*;
 import static org.worldlisttrashcan.WorldListTrashCan.main;
 import static org.worldlisttrashcan.WorldListTrashCan.papi;
 
@@ -36,18 +35,31 @@ public class Method {
         if (meta != null) {
 
             String customName = "";
-            if(Is1_21_1_20Server){
-                // 获取显示名（新版API）
-                if (meta.hasDisplayName()) {
-                    Component displayNameComponent = meta.displayName();
-                    if (displayNameComponent != null) {
-                        customName = "[name:"+PlainTextComponentSerializer.plainText().serialize(displayNameComponent)+"]";
+            try{
+                if(Is1_21_1_20Server){
+                    // 获取显示名（新版API）
+                    if (meta.hasDisplayName()) {
+
+                        if (IsPaperServer) {
+                            Component displayNameComponent = meta.displayName();
+                            if (displayNameComponent != null) {
+                                customName = "[name:"+PlainTextComponentSerializer.plainText().serialize(displayNameComponent)+"]";
+                            }
+                        }else {
+                            String displayName = meta.getDisplayName();
+                            customName = "[name:"+meta.getDisplayName()+"]";
+                        }
+
+
+                    }
+                }else {
+                    if(meta.hasDisplayName()){
+                        customName = "[name:"+meta.getDisplayName()+"]";
                     }
                 }
-            }else {
-                if(meta.hasDisplayName()){
-                    customName = "[name:"+meta.getDisplayName()+"]";
-                }
+            }catch (Exception e){
+                message.consoleSay("&c获取物品描述字符串时出错 "+e);
+                customName = "[name:errorName]";
             }
             item += customName;
 
